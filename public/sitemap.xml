@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset 
+  xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 
+                      http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
+
+  <!-- Home -->
+  <url>
+    <loc>https://www.beaubless.com/</loc>
+    <priority>1.0</priority>
+  </url>
+
+  <!-- Collections -->
+  <url>
+    <loc>https://www.beaubless.com/collections/hair-care</loc>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://www.beaubless.com/collections/skin-care</loc>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://www.beaubless.com/collections/combos</loc>
+    <priority>0.8</priority>
+  </url>
+
+  <!-- Static Pages -->
+  <url>
+    <loc>https://www.beaubless.com/about-us</loc>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://www.beaubless.com/contact-us</loc>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://www.beaubless.com/term-of-use</loc>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://www.beaubless.com/privacy-policy</loc>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://www.beaubless.com/refund-return</loc>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://www.beaubless.com/shipping</loc>
+    <priority>0.5</priority>
+  </url>
+
+  <!-- Shop & Account -->
+  <url>
+    <loc>https://www.beaubless.com/products</loc>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.beaubless.com/wish-list</loc>
+    <priority>0.4</priority>
+  </url>
+  <url>
+    <loc>https://www.beaubless.com/login</loc>
+    <priority>0.4</priority>
+  </url>
+  <url>
+    <loc>https://www.beaubless.com/register</loc>
+    <priority>0.4</priority>
+  </url>
+  <url>
+    <loc>https://www.beaubless.com/cart</loc>
+    <priority>0.4</priority>
+  </url>
+  <url>
+    <loc>https://www.beaubless.com/checkout</loc>
+    <priority>0.4</priority>
+  </url>
+
+  <!-- Blog -->
+  <url>
+    <loc>https://www.beaubless.com/blogs</loc>
+    <priority>0.5</priority>
+  </url>
+
+  <!-- Others -->
+  <url>
+    <loc>https://www.beaubless.com/gifting</loc>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://www.beaubless.com/compare-products</loc>
+    <priority>0.4</priority>
+  </url>
+
+</urlset>
