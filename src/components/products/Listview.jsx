@@ -1,5 +1,5 @@
 import React from "react";
-import ProductsCards6 from "../productCards/ProductsCards6";
+import ProductsCards6 from "../productCards/ProductCard1";
 import Pagination from "../common/Pagination";
 
 export default function Listview({ products, pagination = true }) {

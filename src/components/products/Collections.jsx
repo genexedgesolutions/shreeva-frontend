@@ -11,16 +11,19 @@ export default function Collections() {
     const fetchCategories = async () => {
       try {
         const res = await getAllCategories();
+
         const collectionArray = res.categories.map((collection, index) => ({
           id: collection._id,
-          imgSrc: collection.image?.[0],
+          // ✅ prefer thumbnail, fallback to images[0]
+          imgSrc: collection.thumbnail || collection.images?.[0] || "https://dummy.genexedge.in/?size=500x500&bg=333&fg=fff&format=png&text="+collection.name,
           alt: collection.name,
           title: collection.name,
-          slug: slugify(collection.name, { lower: true }),
+          slug: collection.slug || slugify(collection.name, { lower: true }),
           subtitle: collection.name,
-          count: collection.productCount || 0, // Optional count fallback
+          count: collection.productCount || 0,
           delay: `${index * 0.1}s`,
         }));
+
         setCollections(collectionArray);
       } catch (error) {
         console.error("Failed to fetch collections", error);
@@ -32,13 +35,13 @@ export default function Collections() {
     fetchCategories();
   }, []);
 
-  if (loading) return null; // or <Spinner /> if you want to show a loader
+  if (loading) return null; // or loader
 
   return (
     <section className="flat-spacing">
       <div className="container">
         <div className="tf-grid-layout tf-col-2 lg-col-4">
-          {collections.map((item, index) => (
+          {collections.map((item) => (
             <div
               key={item.id}
               className="collection-position-2 radius-lg style-3 hover-img"
@@ -46,9 +49,8 @@ export default function Collections() {
               <a className="img-style" href={`/collections/${item.slug}`}>
                 <img
                   className="lazyload"
-                  data-src={item.imgSrc}
-                  alt={`banner-${item.title.toLowerCase()}`}
                   src={item.imgSrc}
+                  alt={item.alt}
                   width={450}
                   height={600}
                 />
@@ -56,9 +58,7 @@ export default function Collections() {
               <div className="content">
                 <a href={`/collections/${item.slug}`} className="cls-btn">
                   <h6 className="text">{item.title}</h6>
-                  <span className="count-item text-secondary">
-                    {item.count}
-                  </span>
+                  <span className="count-item text-secondary">{item.count}</span>
                   <i className="icon icon-arrowUpRight" />
                 </a>
               </div>

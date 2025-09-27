@@ -41,6 +41,22 @@ export const getAllCategories = async () => {
     }
 };
 
+// get single category by slug
+export const getCategoryBySlug = async (slug, page = 1, limit = 50) => {
+  try {
+    const response = await api.get(
+      `/products/get-product-category-by-slug/${slug}`,
+      {
+        params: { page, limit }, // optional pagination
+      }
+    );
+    return response.data;
+  } catch (error) {
+    console.error(`Error fetching category by slug "${slug}":`, error);
+    throw error;
+  }
+};
+
 // Delete Category
 export const deleteCategory = async (categoryId) => {
     try {

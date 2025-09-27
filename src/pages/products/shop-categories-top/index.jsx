@@ -4,12 +4,11 @@ import { Link, Navigate, useParams } from "react-router-dom";
 import React, { useEffect, useState } from "react";
 import MetaComponent from "@/components/common/MetaComponent";
 import Topbar from "@/components/headers/Topbar";
-import Products14 from "@/components/products/Products14";
-import { getAllCategories } from "@/api/category";
-import slugify from "slugify";
+import Products16 from "@/components/products/Products16";
+import { getCategoryBySlug } from "@/api/category"; // ✅ correct API
 
 const metadata = {
-  title: "Shop Collections || Beaubless",
+  title: "Shop Collections || Shreeva Jewels - Your Jewelry Choice",
   description: "Shop Collections",
 };
 
@@ -17,59 +16,60 @@ export default function ShopCategoriesTopPage1() {
   const { slug } = useParams();
 
   const [loading, setLoading] = useState(true);
-  const [collection, setCollection] = useState(null);
+  const [currentCollection, setCurrentCollection] = useState(null);
+  const [products, setProducts] = useState([]);
 
   useEffect(() => {
-    const fetchCategories = async () => {
+    const fetchCategory = async () => {
       try {
-        const res = await getAllCategories();
-        const collectionArray = res.categories.map((collection, index) => ({
-          id: collection._id,
-          imgSrc: collection.image?.[0],
-          alt: collection.name,
-          title: collection.name,
-          slug: slugify(collection.name, { lower: true }),
-          subtitle: collection.name,
-          delay: `${index * 0.1}s`,
-        }));
+        const res = await getCategoryBySlug(slug); // { category, products }
 
-        setCollection(collectionArray);
+        console.log("✅ API Response for slug:", slug, res);
 
-        const matchedCollection = collectionArray.find(
-          (item) => item.slug === slug
-        );
+        if (res?.category) {
+          const c = res.category;
 
-        setCollection(matchedCollection || null);
+          const formatted = {
+            id: c._id,
+            imgSrc: c.thumbnail || c.images?.[0] || "/images/placeholder.jpg",
+            alt: c.name,
+            title: c.name,
+            slug: c.slug,
+          };
+
+          setCurrentCollection(formatted);
+          setProducts(res.products || []);
+        } else {
+          setCurrentCollection(null);
+        }
       } catch (err) {
-        console.error("Failed to fetch categories:", err);
+        console.error("❌ Failed to fetch category by slug:", err);
       } finally {
         setLoading(false);
       }
     };
 
-    fetchCategories();
+    fetchCategory();
   }, [slug]);
 
-  if (loading) return null; // or a spinner
+  if (loading) return null; // TODO: replace with loader/spinner
 
-  if (!collection) {
-    return <Navigate to="/products" replace />;
+  if (!currentCollection) {
+    return <Navigate to="/collections" replace />;
   }
 
-  const collectionId = collection.id;
   return (
     <>
       <MetaComponent meta={metadata} />
       <Topbar />
       <Header1 />
-      <div
-        className="page-title"
-        style={{ backgroundImage: "url(/images/section/bg-2.png )" }}
-      >
+
+      {/* Banner */}
+      <div className="page-title bg-primary">
         <div className="container-full">
           <div className="row">
-            <div className="col-12">
-              <h3 className="heading text-center">Collections</h3>
+            <div className="col-12 text-center text-white py-5">
+              <h3 className="heading">{currentCollection.title}</h3>
               <ul className="breadcrumbs d-flex align-items-center justify-content-center">
                 <li>
                   <Link className="link" to={`/`}>
@@ -79,13 +79,20 @@ export default function ShopCategoriesTopPage1() {
                 <li>
                   <i className="icon-arrRight" />
                 </li>
-                <li>Collections</li>
+                <li>{currentCollection.title}</li>
               </ul>
             </div>
           </div>
         </div>
       </div>
-      <Products14 parentClass="flat-spacing" collectionId={collectionId} />
+
+      {/* Products under this collection */}
+      <Products16
+        parentClass="flat-spacing"
+        collectionId={currentCollection.id}
+        products={products} // ✅ pass products if Products16 supports it
+      />
+
       <Footer1 />
     </>
   );

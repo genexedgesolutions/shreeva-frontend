@@ -9810,6 +9810,7 @@ fieldset:disabled .btn {
     background-color: rgba(var(--bs-black-rgb), var(--bs-bg-opacity)) !important
 }
 
+
 .bg-white {
     --bs-bg-opacity: 1;
     background-color: rgba(var(--bs-white-rgb), var(--bs-bg-opacity)) !important
@@ -9888,7 +9889,13 @@ fieldset:disabled .btn {
 }
 
 .bg-gradient {
-    background-image: var(--bs-gradient) !important
+    background: linear-gradient(
+    135deg,
+    #4b0055 0%,   /* deep royal purple */
+    #6a0dad 40%,  /* rich purple accent */
+    #c8a24a 100%  /* metallic gold */
+  ) !important;
+  color: white !important;
 }
 
 .user-select-all {
@@ -13905,3 +13912,12 @@ fieldset:disabled .btn {
 }
 
 /*# sourceMappingURL=bootstrap.min.css.map */
+
+/* Shreeva Gradient (Purple → Gold) */
+.shreeva-gradient {
+  background-color: #4b0055 !important;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text; /* for modern browsers */
+  color: transparent;    /* fallback */
+}

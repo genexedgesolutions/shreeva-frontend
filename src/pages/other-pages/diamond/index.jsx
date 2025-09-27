@@ -1,20 +1,20 @@
 import Footer1 from "@/components/footers/Footer1";
 import Header1 from "@/components/headers/Header1";
-import Topbar6 from "@/components/headers/Topbar6";
-import Contact3 from "@/components/otherPages/Contact2";
-import Faqs from "@/components/otherPages/Faqs";
-import StoreLocations3 from "@/components/otherPages/StoreLocations3";
-import React from "react";
-import { Link } from "react-router-dom";
+import Topbar6 from "@/components/headers/Topbar";
+import Products11 from "@/components/products/Products11";
 
+import { Link } from "react-router-dom";
+import React from "react";
 import MetaComponent from "@/components/common/MetaComponent";
 import Topbar from "@/components/headers/Topbar";
-const metadata = {
-  title: "Contact Us || Beaubless",
-  description: "Beaubless - Hair Care and Skin Care Solution",
-};
+import Products15 from "@/components/products/Products15";
 
-export default function ContactPage() {
+
+const metadata = {
+  title: "Product || Beaubless Cosmetics - Your Skincare Choice",
+  description: "Beaubless Cosmetics - Your Skincare Choice",
+};
+export default function diamond() {
   return (
     <>
       <MetaComponent meta={metadata} />
@@ -27,7 +27,7 @@ export default function ContactPage() {
         <div className="container-full">
           <div className="row">
             <div className="col-12">
-              <h3 className="heading text-center">Contact Us</h3>
+              <h3 className="heading text-center">Diamond</h3>
               <ul className="breadcrumbs d-flex align-items-center justify-content-center">
                 <li>
                   <Link className="link" to={`/`}>
@@ -37,23 +37,14 @@ export default function ContactPage() {
                 <li>
                   <i className="icon-arrRight" />
                 </li>
-                <li>
-                  <a className="link" href="#">
-                    Pages
-                  </a>
-                </li>
-                <li>
-                  <i className="icon-arrRight" />
-                </li>
-                <li className="text-primary">Contact Us</li>
+                <li>Products</li>
               </ul>
             </div>
           </div>
         </div>
       </div>
-      <Contact3 />
-      {/* <StoreLocations3 /> */}
-      <Faqs />
+      {/* <Products11 /> */}
+      <Products15 />
       <Footer1 />
     </>
   );

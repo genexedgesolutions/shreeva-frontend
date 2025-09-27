@@ -1,12 +1,13 @@
-import React, { useEffect, useRef, useState } from "react";
-
-import { Link } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import axios from "axios";
+import { Link, useNavigate } from "react-router-dom";
 
 import CurrencySelect from "../common/CurrencySelect";
 import LanguageSelect from "../common/LanguageSelect";
 import ToolbarBottom from "../headers/ToolbarBottom";
 import ScrollTop from "../common/ScrollTop";
 import { footerLinks, socialLinks } from "@/data/footerLinks";
+
 export default function Footer1({
   border = true,
   dark = true,
@@ -14,73 +15,97 @@ export default function Footer1({
 }) {
   const [success, setSuccess] = useState(true);
   const [showMessage, setShowMessage] = useState(false);
+  const [msg, setMsg] = useState("");
+  const navigate = useNavigate();
 
   const handleShowMessage = () => {
     setShowMessage(true);
-    setTimeout(() => {
-      setShowMessage(false);
-    }, 2000);
+    setTimeout(() => setShowMessage(false), 2200);
   };
 
   const sendEmail = async (e) => {
-    e.preventDefault(); // Prevent default form submission behavior
-    const email = e.target.email.value;
+    e.preventDefault();
+    const email = e.target.email.value?.trim();
+
+    if (!email) {
+      setSuccess(false);
+      setMsg("Please enter a valid email.");
+      return handleShowMessage();
+    }
+
+    const NEWSLETTER_URL =
+      import.meta?.env?.VITE_NEWSLETTER_URL ||
+      ""; // e.g. https://backend.shreevajewels.com/api/v1/newsletter/subscribe
+
+    if (!NEWSLETTER_URL) {
+      setSuccess(false);
+      setMsg(
+        "Newsletter service is not configured yet. Please try again later."
+      );
+      e.target.reset();
+      return handleShowMessage();
+    }
 
     try {
-      // const response = await axios.post(
-      //   "https://express-brevomail.vercel.app/api/contacts",
-      //   {
-      //     email,
-      //   }
-      // );
+      const res = await axios.post(
+        NEWSLETTER_URL,
+        { email },
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Accept: "application/json",
+          },
+        }
+      );
 
-      if ([200, 201].includes(response.status)) {
-        e.target.reset(); // Reset the form
-        setSuccess(true); // Set success state
-        handleShowMessage();
+      if ([200, 201].includes(res.status)) {
+        setSuccess(true);
+        setMsg("You have successfully subscribed.");
+        e.target.reset();
       } else {
-        setSuccess(true); // Handle unexpected responses
-        handleShowMessage();
+        setSuccess(false);
+        setMsg(res.data?.message || "Subscription failed. Please try again.");
       }
     } catch (error) {
-      console.error("Error:", error.response?.data || "An error occurred");
-      setSuccess(true); // Set error state
+      setSuccess(false);
+      setMsg(
+        error?.response?.data?.message ||
+          "Something went wrong. Please try again."
+      );
+    } finally {
       handleShowMessage();
-      e.target.reset(); // Reset the form
     }
   };
+
   useEffect(() => {
     const headings = document.querySelectorAll(".footer-heading-mobile");
 
     const toggleOpen = (event) => {
       const parent = event.target.closest(".footer-col-block");
-      const content = parent.querySelector(".tf-collapse-content");
+      const content = parent?.querySelector(".tf-collapse-content");
+      if (!parent || !content) return;
 
-      if (parent.classList.contains("open")) {
-        parent.classList.remove("open");
-        content.style.height = "0px";
-      } else {
-        parent.classList.add("open");
-        content.style.height = content.scrollHeight + 10 + "px";
-      }
+      const isOpen = parent.classList.contains("open");
+      parent.classList.toggle("open", !isOpen);
+      content.style.height = !isOpen ? content.scrollHeight + 10 + "px" : "0px";
     };
 
     headings.forEach((heading) => {
       heading.addEventListener("click", toggleOpen);
     });
 
-    // Clean up event listeners when the component unmounts
     return () => {
       headings.forEach((heading) => {
         heading.removeEventListener("click", toggleOpen);
       });
     };
-  }, []); // Empty dependency array means this will run only once on mount
+  }, []);
+
   return (
     <>
       <footer
         id="footer"
-        className={`footer ${dark ? "bg-black" : ""} ${
+        className={`footer ${dark ? "bg-gradient" : ""} ${
           hasPaddingBottom ? "has-pb" : ""
         } `}
       >
@@ -88,32 +113,38 @@ export default function Footer1({
           <div className="footer-body">
             <div className="container">
               <div className="row">
+                {/* Left: Brand & Social */}
                 <div className="col-lg-4">
                   <div className="footer-infor">
-                    <div className="footer-logo">
+                    <div className="">
                       <Link to={`/`}>
                         <img
-                           className="logo"
-                          alt=""
+                          className="logo"
+                          alt="Shreeva Jewels"
                           src={
                             dark
-                              ? "/images/logo/shreeva-logo.png"
-                              : "/images/logo/shreeva-logo.png"
+                              ? "/images/logo/logo-rec.png"
+                              : "/images/logo/logo-rec.png"
                           }
-                          width={300}
+                          width={280}
                         />
                       </Link>
                     </div>
-                   
 
                     <ul
                       className={`ms-3 tf-social-icon mt-3 ${
                         dark ? "style-white" : ""
-                      } `}
+                      }`}
                     >
                       {socialLinks.map((link, index) => (
                         <li key={index}>
-                          <a href={link.href} className={link.className}>
+                          <a
+                            href={link.href}
+                            target="_blank"
+                            rel="noreferrer"
+                            className={link.className}
+                            aria-label={link.label || "social"}
+                          >
                             <i className={`icon ${link.iconClass}`} />
                           </a>
                         </li>
@@ -121,6 +152,8 @@ export default function Footer1({
                     </ul>
                   </div>
                 </div>
+
+                {/* Middle: Links */}
                 <div className="col-lg-4">
                   <div className="footer-menu">
                     {footerLinks.map((section, sectionIndex) => (
@@ -161,6 +194,8 @@ export default function Footer1({
                     ))}
                   </div>
                 </div>
+
+                {/* Right: Contact + Newsletter */}
                 <div className="col-lg-4">
                   <div className="footer-col-block">
                     <div
@@ -170,41 +205,31 @@ export default function Footer1({
                     >
                       Contact Us
                     </div>
-                    {/* <div className="footer-address">
-                      <p className={`text-main ${dark ? "text-white" : ""}`}>
-                        Delhi , INDIA
-                      </p>
-                      <Link
-                        to={`/contact-us`}
-                        className={`tf-btn-default fw-6 ${
-                          dark ? "style-white" : ""
-                        } `}
-                      >
-                        GET DIRECTION
-                        <i className="icon-arrowUpRight" />
-                      </Link>
-                    </div> */}
+
                     <ul className="footer-info">
                       <li className={dark ? "text-white" : ""}>
-                        <i
-                          className={`icon-mail ${dark ? "text-white" : ""}`}
-                        />
+                        <i className={`icon-mail ${dark ? "text-white" : ""}`} />
                         <p className={`text-main ${dark ? "text-white" : ""}`}>
-                          care@beaubless.com
+                          info@shreevajewels.com
                         </p>
                       </li>
                       <li className={dark ? "text-white" : ""}>
-                        <i
-                          className={`icon-phone ${dark ? "text-white" : ""}`}
-                        />
+                        <i className={`icon-phone ${dark ? "text-white" : ""}`} />
                         <p className={`text-main ${dark ? "text-white" : ""}`}>
-                          +91 9990531210
+                          +91 91042 35510
+                        </p>
+                      </li>
+                      <li className={dark ? "text-white" : ""}>
+                        <i className={`icon-mapPin ${dark ? "text-white" : ""}`} />
+                        <p className={`text-main ${dark ? "text-white" : ""}`}>
+                          Mumbai, India
                         </p>
                       </li>
                     </ul>
+
                     <div className="tf-collapse-content mt-3">
                       <div className="footer-newsletter">
-                      <form
+                        <form
                           onSubmit={sendEmail}
                           className={`form-newsletter subscribe-form ${
                             dark ? "style-black" : ""
@@ -219,198 +244,87 @@ export default function Footer1({
                                 placeholder="Enter your e-mail"
                                 tabIndex={0}
                                 aria-required="true"
+                                required
                               />
                             </fieldset>
                             <div className="button-submit">
-                              <button
-                                className="subscribe-button"
-                                type="submit"
-                              >
+                              <button className="subscribe-button" type="submit">
                                 <i className="icon icon-arrowUpRight" />
                               </button>
                             </div>
                           </div>
-                          <div className="subscribe-msg" />
+                          {/* toast */}
+                          <div
+                            className={`tfSubscribeMsg footer-sub-element ${
+                              showMessage ? "active" : ""
+                            }`}
+                          >
+                            <p
+                              style={{
+                                color: success ? "rgb(52, 168, 83)" : "red",
+                                margin: 0,
+                              }}
+                            >
+                              {msg || (success
+                                ? "You have successfully subscribed."
+                                : "Something went wrong")}
+                            </p>
+                          </div>
                         </form>
                         <p
-                          className={` text-caption-1text-main ${
+                          className={`text-caption-1 text-main ${
                             dark ? "text-white" : ""
-                          }`}
+                          } mt-2`}
                         >
                           Sign up for our newsletter and get 10% off your first
                           purchase
                         </p>
-                        <div
-                          className={`tfSubscribeMsg  footer-sub-element ${
-                            showMessage ? "active" : ""
-                          }`}
-                        >
-                          {success ? (
-                            <p style={{ color: "rgb(52, 168, 83)" }}>
-                              You have successfully subscribed.
-                            </p>
-                          ) : (
-                            <p style={{ color: "red" }}>Something went wrong</p>
-                          )}
-                        </div>
-                       
-                        {/* <div className="tf-cart-checkbox">
-                          <div className="tf-checkbox-wrapp">
-                            <input
-                              className=""
-                              type="checkbox"
-                              id="footer-Form_agree"
-                              name="agree_checkbox"
-                            />
-                            <div>
-                              <i className="icon-check" />
-                            </div>
-                          </div>
-                          <label
-                            className={`text-primary text-caption-1 ${
-                              dark ? "text-white" : ""
-                            }`}
-                            htmlFor="footer-Form_agree"
-                          >
-                            By clicking subcribe, you agree to the{" "}
-                            <Link
-                              className={`fw-6 link ${
-                                dark ? "text-white" : ""
-                              }`}
-                              to={`/term-of-use`}
-                            >
-                              Terms of Service
-                            </Link>{" "}
-                            and{" "}
-                            <a
-                              className={`fw-6 link ${
-                                dark ? "text-white" : ""
-                              }`}
-                              to={`/privacy-policy`}
-                            >
-                              Privacy Policy
-                            </a>
-                            .
-                          </label>
-                        </div> */}
                       </div>
                     </div>
                   </div>
                 </div>
+                {/* /Right */}
               </div>
             </div>
           </div>
-          {/* <div className="footer-bottom">
-            <div className="container">
-              <div className="row">
-                <div className="col-12">
-                  <div className="footer-bottom-wrap">
-                    <div className="left">
-                      <p className="text-caption-1 text-primary">
-                        <script
-                          type="text/javascript"
-                          src="https://d3mkw6s8thqya7.cloudfront.net/integration-plugin.js"
-                          id="aisensy-wa-widget"
-                          widget-id="RCg1TW"
-                        ></script>
-                        ©{new Date().getFullYear()} Beaubless Cosmetics. All
-                        Rights Reserved.
-                      </p>
-                      <div className="tf-cur justify-content-end">
-                        <div className="tf-currencies">
-                          <CurrencySelect light={dark ? true : false} />
-                        </div>
-                        <div className="tf-languages">
-                          <LanguageSelect
-                            parentClassName={`image-select center style-default type-languages ${
-                              dark ? "color-white" : ""
-                            }`}
-                          />
-                        </div>
-                      </div>
-                    </div>
-                    <div className="tf-payment">
-                      <p className="text-caption-1  text-primary">Payment:</p>
-                      <ul>
-                        <li>
-                          <img
-                            alt=""
-                            src="/images/payment/img-1.png"
-                            width={100}
-                            height={64}
-                          />
-                        </li>
-                        <li>
-                          <img
-                            alt=""
-                            src="/images/payment/img-2.png"
-                            width={100}
-                            height={64}
-                          />
-                        </li>
-                        <li>
-                          <img
-                            alt=""
-                            src="/images/payment/img-3.png"
-                            width={100}
-                            height={64}
-                          />
-                        </li>
-                        <li>
-                          <img
-                            alt=""
-                            src="/images/payment/img-4.png"
-                            width={98}
-                            height={64}
-                          />
-                        </li>
-                        <li>
-                          <img
-                            alt=""
-                            src="/images/payment/img-5.png"
-                            width={102}
-                            height={64}
-                          />
-                        </li>
-                        <li>
-                          <img
-                            alt=""
-                            src="/images/payment/img-6.png"
-                            width={98}
-                            height={64}
-                          />
-                        </li>
-                      </ul>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div> */}
-          <div className={`footer-bottom ${
-                          dark ? "bg-white" : ""
-                        }`}>
-            <div className="container">
-              <div className="d-flex justify-content-center align-items-center">
-                <div className="col-12 text-center">
-                  <div className="py-3 text-center">
-                    <div className="d-flex justify-content-center align-items-center">
-                      <p
-                        className={`text-black m-0 text-center ${
-                          dark ? "text-black" : ""
-                        }`}
-                      >
-                        ©{new Date().getFullYear()}Shreeva Jewels. All
-                        Rights Reserved.
-                      </p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
+
+          {/* Bottom bar */}
+          <div className={`footer-bottom ${dark ? "bg-white" : ""}`}>
+  <div className="container">
+    <div className="row align-items-center py-3">
+      {/* Left Section */}
+      <div className="col-md-6 text-start">
+        <p className={`mb-1 ${dark ? "text-black" : ""}`}>
+          ©{new Date().getFullYear()} Shreeva Jewels. All Rights Reserved.
+        </p>
+        <button
+          className="btn p-0 text-decoration-underline"
+          onClick={() => navigate("/blazync-technologies")}
+          style={{ fontSize: 13 }}
+          aria-label="Developed & Managed by Blazync Technologies"
+        >
+          Developed &amp; Managed by Blazync Technologies
+        </button>
+      </div>
+
+      {/* Right Section */}
+      <div className="col-md-6 text-end d-flex justify-content-end align-items-center gap-2">
+        <img src="/images/payment/img-2.png" alt="Visa" width={50} />
+        <img src="/images/payment/img-1.png" alt="Mastercard" width={50} />
+        <img src="/images/payment/img-3.png" alt="Amex" width={50} />
+        <img src="/images/payment/img-4.png" alt="PayPal" width={50} />
+        <img src="/images/payment/img-5.png" alt="Rupay" width={50} />
+        <img src="/images/payment/img-6.png" alt="UPI" width={50} />
+        <img src="/images/payment/cc-avenue.png" alt="CC Avenue" width={50} />
+      </div>
+    </div>
+  </div>
+</div>
+
+          {/* /Bottom bar */}
         </div>
       </footer>
+
       <ScrollTop hasPaddingBottom={hasPaddingBottom} />
       <ToolbarBottom />
     </>

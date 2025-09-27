@@ -72,35 +72,34 @@ export default function HomePage() {
       <Suspense fallback={<Loader />}>
         <MarqueeSection2 />
       </Suspense>
-      <Categories/>
       <Suspense fallback={<Loader/>}>
-        <Collections />
+      <Categories/>
+        {/* <Collections /> */}
       </Suspense>
       
       <Suspense fallback={<Loader />}>
-        {/* <Products2 /> */}
+        <Products2 />
       </Suspense>
-{/* 
-      <Hero2 /> */}
 
       <Suspense fallback={<Loader />}>
+      <Hero />
         {/* <BannerCountdown /> */}
       </Suspense>
 
       <Suspense fallback={<Loader />}>
-        {/* <Products /> */}
+        <Products />
       </Suspense>
 
       <Suspense fallback={<Loader />}>
-        {/* <Lookbook /> */}
+        <Lookbook />
       </Suspense>
 
       <Suspense fallback={<Loader />}>
-        {/* <BannerCollection /> */}
+        <BannerCollection />
       </Suspense>
 
       <Suspense fallback={<Loader />}>
-        {/* <Tiktok /> */}
+        <Tiktok />
       </Suspense>
       {/* <KoreanInspired/> */}
       <Suspense fallback={<Loader />}>
@@ -108,7 +107,7 @@ export default function HomePage() {
       </Suspense>
 
       <Suspense fallback={<Loader />}>
-        {/* <Features /> */}
+        <Features />
       </Suspense>
 
       <Suspense fallback={<Loader />}>

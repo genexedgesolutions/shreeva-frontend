@@ -10,6 +10,10 @@ export default function Nav() {
       <li className={`menu-item ${pathname === "/" ? "active" : ""}`}>
         <Link to="/" className="item-link">Home</Link>
       </li>
+      {/* Home */}
+      <li className={`menu-item ${pathname === "/collections" ? "active" : ""}`}>
+        <Link to="/Collections" className="item-link">Collections</Link>
+      </li>
 
       {/* Diamonds */}
       <li className={`menu-item has-dropdown ${pathname === "/diamond" ? "active" : ""}`}>

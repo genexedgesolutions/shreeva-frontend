@@ -54,7 +54,13 @@ import GiftingPage from "./pages/gifting/Gifting";
 import CCAvenueCheckout from "./pages/other-pages/CCAvenue/cc-avenue-checkout";
 import OrderFailurePage from "./pages/other-pages/order-failure";
 import OrderPendingPage from "./pages/other-pages/order-pending";
-
+import Diamond from "./pages/other-pages/diamond";
+import Jewellery from "./pages/other-pages/jewellery";
+import HipHopJewellery from "./pages/other-pages/hiphopJewellery";
+import ParcelGoods from "./pages/other-pages/parcelGoods";
+import ShareDemand from "./pages/other-pages/shareDemand";
+import Events from "./pages/other-pages/events";
+import Education from "./pages/other-pages/education";
 function App({ setIsLoading }) {
   const { pathname } = useLocation();
   useEffect(() => {
@@ -232,6 +238,15 @@ function App({ setIsLoading }) {
                 path="product-detail/:slug"
                 element={<ProductDescriptionListPage />}
               />
+              <Route path="diamond" 
+              element={<Diamond/>} />
+               <Route path="jewellery" element={<Jewellery />} />
+      <Route path="hip-hop-jewellery" element={<HipHopJewellery />} />
+      <Route path="parcel-goods" element={<ParcelGoods />} />
+      <Route path="share-demand" element={<ShareDemand />} />
+      <Route path="events" element={<Events />} />
+      <Route path="education" element={<Education />} />
+              
 
               {/* Single Product Page End */}
               <Route

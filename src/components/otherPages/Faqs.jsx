@@ -1,3 +1,4 @@
+"use client";
 import React from "react";
 
 export default function Faqs() {
@@ -8,182 +9,261 @@ export default function Faqs() {
           <div className="list-faqs">
             <div>
               <h5 className="faqs-title">Need help ?</h5>
-              <ul
-                className="accordion-product-wrap style-faqs"
-                id="accordion-faq-1"
-              >
+              <ul className="accordion-product-wrap style-faqs" id="accordion-faq-1">
+                {/* 1 */}
                 <li className="accordion-product-item">
                   <a
-                    href="#accordion-1"
-                    className="accordion-title collapsed current"
-                    data-bs-toggle="collapse"
-                    aria-expanded="true"
-                    aria-controls="accordion-1"
-                  >
-                    <h6>Are your products safe for sensitive skin?</h6>
-                    <span className="btn-open-sub" />
-                  </a>
-                  <div
-                    id="accordion-1"
-                    className="collapse"
-                    data-bs-parent="#accordion-faq-1"
-                  >
-                    <div className="accordion-faqs-content">
-                      <p className="text-primary">
-                        Absolutely! Our products are dermatologically tested and
-                        crafted with gentle, skin-loving ingredients. However,
-                        we always recommend a patch test before full
-                        application.
-                      </p>
-                    </div>
-                  </div>
-                </li>
-                <li className="accordion-product-item">
-                  <a
-                    href="#accordion-2"
+                    href="#faq-1"
                     className="accordion-title current"
                     data-bs-toggle="collapse"
                     aria-expanded="true"
-                    aria-controls="accordion-2"
+                    aria-controls="faq-1"
                   >
-                    <h6>Are your products suitable for all skin types?</h6>
+                    <h6>What is your return / refund policy?</h6>
                     <span className="btn-open-sub" />
                   </a>
-                  <div
-                    id="accordion-2"
-                    className="collapse show"
-                    data-bs-parent="#accordion-faq-1"
-                  >
+                  <div id="faq-1" className="collapse show" data-bs-parent="#accordion-faq-1">
                     <div className="accordion-faqs-content">
                       <p className="text-primary">
-                        Yes, our products are carefully formulated to cater to
-                        different skin types, including oily, dry, combination,
-                        and sensitive skin. Each product comes with a detailed
-                        description highlighting which skin type it’s best
-                        suited for. If you're unsure, our team is always happy
-                        to help you choose the right products based on your skin
-                        concerns.
+                        <strong>No Return &amp; No Refund.</strong> We do not accept returns or issue refunds once the product is delivered. However, we offer a{" "}
+                        <strong>14-day replacement</strong> for damaged, defective, or wrong items received. The item must be unused, in original packaging, and supported by clear unboxing photos/videos.
                       </p>
                     </div>
                   </div>
                 </li>
+
+                {/* 2 */}
                 <li className="accordion-product-item">
                   <a
-                    href="#accordion-3"
-                    className="accordion-title collapsed current"
+                    href="#faq-2"
+                    className="accordion-title collapsed"
                     data-bs-toggle="collapse"
-                    aria-expanded="true"
-                    aria-controls="accordion-3"
+                    aria-expanded="false"
+                    aria-controls="faq-2"
                   >
-                    <h6>
-                      Do your products contain any harmful chemicals like
-                      parabens or sulfates?
-                    </h6>
+                    <h6>How long does shipping take?</h6>
                     <span className="btn-open-sub" />
                   </a>
-                  <div
-                    id="accordion-3"
-                    className="collapse"
-                    data-bs-parent="#accordion-faq-1"
-                  >
+                  <div id="faq-2" className="collapse" data-bs-parent="#accordion-faq-1">
                     <div className="accordion-faqs-content">
                       <p className="text-primary">
-                        Absolutely not! We are committed to creating clean,
-                        safe, and effective skincare products. All our
-                        formulations are free from parabens, sulfates, mineral
-                        oils, phthalates, and other harmful chemicals that can
-                        damage your skin or health in the long run. We carefully
-                        select natural, non-toxic ingredients backed by science
-                        to ensure each product is not only gentle but also
-                        delivers visible results. Your skin deserves only the
-                        best, and we prioritize safety, transparency, and
-                        quality in every product we create
+                        <strong>Ready-to-ship:</strong> dispatch in 3–5 business days. <br />
+                        <strong>Made-to-order / customized:</strong> 7–14 business days for crafting &amp; QC before dispatch. <br />
+                        <strong>Transit:</strong> Metro 2–5 days, other cities 5–8 days after dispatch. Delays may occur due to weather/holidays/courier issues.
                       </p>
                     </div>
                   </div>
                 </li>
+
+                {/* 3 */}
                 <li className="accordion-product-item">
                   <a
-                    href="#accordion-4"
-                    className="accordion-title collapsed current"
+                    href="#faq-3"
+                    className="accordion-title collapsed"
                     data-bs-toggle="collapse"
-                    aria-expanded="true"
-                    aria-controls="accordion-4"
+                    aria-expanded="false"
+                    aria-controls="faq-3"
                   >
-                    <h6>
-                      Do your products have artificial fragrances or colors?
-                    </h6>
+                    <h6>Do you ship internationally?</h6>
                     <span className="btn-open-sub" />
                   </a>
-                  <div
-                    id="accordion-4"
-                    className="collapse"
-                    data-bs-parent="#accordion-faq-1"
-                  >
+                  <div id="faq-3" className="collapse" data-bs-parent="#accordion-faq-1">
                     <div className="accordion-faqs-content">
                       <p className="text-primary">
-                        No, we avoid using artificial fragrances and colors in
-                        our formulations. Any scent you experience comes from
-                        natural essential oils or the ingredients themselves.
-                        This helps us create products that are both gentle on
-                        your skin and environmentally friendly.
+                        We currently ship across India. For international orders, please contact us on WhatsApp at <strong>+91 91042 35510</strong> or email{" "}
+                        <a href="mailto:info@shreevajewels.com">info@shreevajewels.com</a> for shipping options and charges.
                       </p>
                     </div>
                   </div>
                 </li>
+
+                {/* 4 */}
                 <li className="accordion-product-item">
                   <a
-                    href="#accordion-5"
-                    className="accordion-title collapsed current"
+                    href="#faq-4"
+                    className="accordion-title collapsed"
                     data-bs-toggle="collapse"
-                    aria-expanded="true"
-                    aria-controls="accordion-5"
+                    aria-expanded="false"
+                    aria-controls="faq-4"
                   >
-                    <h6>Can I use your products if I have acne-prone skin?</h6>
+                    <h6>Are your products authentic and hallmarked?</h6>
                     <span className="btn-open-sub" />
                   </a>
-                  <div
-                    id="accordion-5"
-                    className="collapse"
-                    data-bs-parent="#accordion-faq-1"
-                  >
+                  <div id="faq-4" className="collapse" data-bs-parent="#accordion-faq-1">
                     <div className="accordion-faqs-content">
                       <p className="text-primary">
-                        Absolutely! We offer a range of products specifically
-                        designed for acne-prone and sensitive skin. Our formulas
-                        are non-comedogenic, meaning they won't clog pores, and
-                        they include soothing ingredients like niacinamide, tea
-                        tree, and aloe vera to calm breakouts without drying out
-                        your skin.
+                        Yes. Our precious metal jewelry is crafted to stated purity and is BIS hallmarked wherever applicable. Gemstones (where mentioned) are sourced from trusted partners; select products include authenticity details/certificates.
                       </p>
                     </div>
                   </div>
                 </li>
+
+                {/* 5 */}
                 <li className="accordion-product-item">
                   <a
-                    href="#accordion-5"
-                    className="accordion-title collapsed current"
+                    href="#faq-5"
+                    className="accordion-title collapsed"
                     data-bs-toggle="collapse"
-                    aria-expanded="true"
-                    aria-controls="accordion-5"
+                    aria-expanded="false"
+                    aria-controls="faq-5"
                   >
-                    <h6>Are your products suitable for daily use?</h6>
+                    <h6>Can I customize or personalize my jewelry?</h6>
                     <span className="btn-open-sub" />
                   </a>
-                  <div
-                    id="accordion-5"
-                    className="collapse"
-                    data-bs-parent="#accordion-faq-1"
-                  >
+                  <div id="faq-5" className="collapse" data-bs-parent="#accordion-faq-1">
                     <div className="accordion-faqs-content">
                       <p className="text-primary">
-                        Yes, our products are designed to be gentle enough for
-                        daily use while delivering effective results. Each
-                        product comes with detailed usage instructions to help
-                        you incorporate it into your daily skincare routine. If
-                        you're unsure about how often to use a specific product,
-                        feel free to reach out to our skincare experts for
-                        personalized advice.
+                        Absolutely! We offer size adjustments, metal finish choices, stone options, and engraving on eligible designs. Custom pieces may require 7–14 business days extra. Customized items are <strong>not eligible</strong> for return/refund.
+                      </p>
+                    </div>
+                  </div>
+                </li>
+
+                {/* 6 */}
+                <li className="accordion-product-item">
+                  <a
+                    href="#faq-6"
+                    className="accordion-title collapsed"
+                    data-bs-toggle="collapse"
+                    aria-expanded="false"
+                    aria-controls="faq-6"
+                  >
+                    <h6>How do I find my ring/bangle size?</h6>
+                    <span className="btn-open-sub" />
+                  </a>
+                  <div id="faq-6" className="collapse" data-bs-parent="#accordion-faq-1">
+                    <div className="accordion-faqs-content">
+                      <p className="text-primary">
+                        Use our size guide (or contact us) with your inner-diameter/ circumference in mm. For gifts, share a reference ring’s inner diameter and we’ll assist. Minor resizing is possible on select designs—reach out for feasibility.
+                      </p>
+                    </div>
+                  </div>
+                </li>
+
+                {/* 7 */}
+                <li className="accordion-product-item">
+                  <a
+                    href="#faq-7"
+                    className="accordion-title collapsed"
+                    data-bs-toggle="collapse"
+                    aria-expanded="false"
+                    aria-controls="faq-7"
+                  >
+                    <h6>How should I care for my jewelry?</h6>
+                    <span className="btn-open-sub" />
+                  </a>
+                  <div id="faq-7" className="collapse" data-bs-parent="#accordion-faq-1">
+                    <div className="accordion-faqs-content">
+                      <p className="text-primary">
+                        Store pieces separately in soft pouches, keep away from perfumes/chemicals, remove before bathing, swimming, or workouts, and wipe gently with a soft cloth after use. This preserves shine and longevity.
+                      </p>
+                    </div>
+                  </div>
+                </li>
+
+                {/* 8 */}
+                <li className="accordion-product-item">
+                  <a
+                    href="#faq-8"
+                    className="accordion-title collapsed"
+                    data-bs-toggle="collapse"
+                    aria-expanded="false"
+                    aria-controls="faq-8"
+                  >
+                    <h6>What payment methods do you accept?</h6>
+                    <span className="btn-open-sub" />
+                  </a>
+                  <div id="faq-8" className="collapse" data-bs-parent="#accordion-faq-1">
+                    <div className="accordion-faqs-content">
+                      <p className="text-primary">
+                        We accept major cards, UPI, and net-banking via secure payment gateways. Cash-on-Delivery may not be available on all orders or pin codes.
+                      </p>
+                    </div>
+                  </div>
+                </li>
+
+                {/* 9 */}
+                <li className="accordion-product-item">
+                  <a
+                    href="#faq-9"
+                    className="accordion-title collapsed"
+                    data-bs-toggle="collapse"
+                    aria-expanded="false"
+                    aria-controls="faq-9"
+                  >
+                    <h6>How do I track my order?</h6>
+                    <span className="btn-open-sub" />
+                  </a>
+                  <div id="faq-9" className="collapse" data-bs-parent="#accordion-faq-1">
+                    <div className="accordion-faqs-content">
+                      <p className="text-primary">
+                        Once dispatched, we’ll share a tracking link via WhatsApp/email. You can follow real-time updates until delivery. For help, contact us with your order ID.
+                      </p>
+                    </div>
+                  </div>
+                </li>
+
+                {/* 10 */}
+                <li className="accordion-product-item">
+                  <a
+                    href="#faq-10"
+                    className="accordion-title collapsed"
+                    data-bs-toggle="collapse"
+                    aria-expanded="false"
+                    aria-controls="faq-10"
+                  >
+                    <h6>How do I request a replacement?</h6>
+                    <span className="btn-open-sub" />
+                  </a>
+                  <div id="faq-10" className="collapse" data-bs-parent="#accordion-faq-1">
+                    <div className="accordion-faqs-content">
+                      <p className="text-primary">
+                        Inform us within <strong>14 days</strong> of delivery with unboxing photos/videos and order details. If approved, we’ll arrange instructions for return pickup or re-dispatch. Replacements are subject to inspection and policy.
+                      </p>
+                    </div>
+                  </div>
+                </li>
+
+                {/* 11 */}
+                <li className="accordion-product-item">
+                  <a
+                    href="#faq-11"
+                    className="accordion-title collapsed"
+                    data-bs-toggle="collapse"
+                    aria-expanded="false"
+                    aria-controls="faq-11"
+                  >
+                    <h6>Do you offer gift wrap and special packaging?</h6>
+                    <span className="btn-open-sub" />
+                  </a>
+                  <div id="faq-11" className="collapse" data-bs-parent="#accordion-faq-1">
+                    <div className="accordion-faqs-content">
+                      <p className="text-primary">
+                        Yes! All orders are shipped in premium, tamper-proof packaging. Gift notes and special wrapping can be arranged—just mention it at checkout or contact us.
+                      </p>
+                    </div>
+                  </div>
+                </li>
+
+                {/* 12 */}
+                <li className="accordion-product-item">
+                  <a
+                    href="#faq-12"
+                    className="accordion-title collapsed"
+                    data-bs-toggle="collapse"
+                    aria-expanded="false"
+                    aria-controls="faq-12"
+                  >
+                    <h6>How can I contact Shreeva Jewels?</h6>
+                    <span className="btn-open-sub" />
+                  </a>
+                  <div id="faq-12" className="collapse" data-bs-parent="#accordion-faq-1">
+                    <div className="accordion-faqs-content">
+                      <p className="text-primary">
+                        📞 <strong>Phone/WhatsApp:</strong> +91 91042 35510 <br />
+                        ✉️ <strong>Email:</strong>{" "}
+                        <a href="mailto:info@shreevajewels.com">info@shreevajewels.com</a> <br />
+                        📍 <strong>Location:</strong> Mumbai, India
                       </p>
                     </div>
                   </div>
@@ -191,67 +271,8 @@ export default function Faqs() {
               </ul>
             </div>
           </div>
-          {/* <div className="ask-question sticky-top">
-            <div className="ask-question-wrap">
-              <h5 className="mb_4">Ask Your Question</h5>
-              <p className="mb_20 text-primary">
-                Ask Anything, We're Here to Help
-              </p>
-              <form
-                className="form-leave-comment"
-                onSubmit={(e) => e.preventDefault()}
-              >
-                <fieldset className="mb_20">
-                  <div className="text-caption-1 mb_8">Name</div>
-                  <input
-                    className=""
-                    type="text"
-                    placeholder="Your Name*"
-                    name="text"
-                    tabIndex={2}
-                    defaultValue=""
-                    aria-required="true"
-                    required
-                  />
-                </fieldset>
-                <fieldset className="mb_20">
-                  <div className="text-caption-1 mb_8">
-                    How can we help you?
-                  </div>
-                  <div className="tf-select">
-                    <select className="">
-                      <option>Exchanges &amp; Returns</option>
-                      <option>Other</option>
-                    </select>
-                  </div>
-                </fieldset>
-                <fieldset className="mb_20">
-                  <div className="text-caption-1 mb_8">Name</div>
-                  <textarea
-                    className=""
-                    rows={4}
-                    placeholder="Your Message*"
-                    tabIndex={2}
-                    aria-required="true"
-                    required
-                    defaultValue={""}
-                  />
-                </fieldset>
-                <div className="button-submit">
-                  <button
-                    className="btn-style-2 w-100"
-                    type="submit"
-                    style={{
-                      background:
-                        "linear-gradient(81deg, #5e0d8b 1% 37.5%, #9268aa 91.5%)",
-                    }}
-                  >
-                    <span className="text text-button">Send Request</span>
-                  </button>
-                </div>
-              </form>
-            </div>
-          </div> */}
+
+          {/* Optional ask-question block removed on purpose; tell me if you want it back with Shreeva styling */}
         </div>
       </div>
     </section>

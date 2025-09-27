@@ -822,7 +822,8 @@ import { useToast } from "@/context/ToastContext";
 import { useCouponsAndShipping } from "@/hooks/useCouponsAndShipping";
 import axios from "axios";
 
-export default function Checkout() {
+export default function 
+Checkout() {
   const [paymentMethods] = useState(["PhonePe", "COD"]);
   const [paymentMethod, setPaymentMethod] = useState("Razorpay");
   const [activeDiscountIndex, setActiveDiscountIndex] = useState(1);
@@ -1057,7 +1058,7 @@ useEffect(() => {
           key,
           amount,
           currency,
-          name: "Beaubless Cosmetics",
+          name: "Shreeva Jewels",
           description: "Order Payment",
           order_id,
           handler: async function (response) {
@@ -1067,7 +1068,7 @@ useEffect(() => {
               localStorage.removeItem("cartList");
   
               // Verify payment
-              const verifyRes = await fetch(`https://www.api.beaubless.com/api/v1/order/verify-payment`, {
+              const verifyRes = await fetch(`https://www.backend.shreevajewels.com/api/v1/order/verify-payment`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ order_id }),

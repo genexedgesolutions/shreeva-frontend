@@ -4,6 +4,7 @@ import Nav from "./Nav";
 import { Link } from "react-router-dom";
 import CartLength from "../common/CartLength";
 import useAuthorization from "@/hooks/userAuthorization";
+import { colors } from "@/data/productFilterOptions";
 export default function Header1({ fullWidth = false }) {
   const isAuthorized = useAuthorization();
   return (
@@ -11,8 +12,9 @@ export default function Header1({ fullWidth = false }) {
       id="header"
       className={`header-default ${fullWidth ? "header-fullwidth" : ""} `}
     >
-      <div className={fullWidth ? "" : "container"}>
-        <div className="row wrapper-header align-items-center">
+      <div className="bg-gradient text-white">
+        <div className={fullWidth ? "" : "container "}>
+        <div className="row wrapper-header align-items-center ">
           <div className="col-md-4 col-3 d-xl-none">
             <a
               href="#mobileMenu"
@@ -24,12 +26,12 @@ export default function Header1({ fullWidth = false }) {
             </a>
           </div>
           <div className="col-xl-3 col-md-4 col-6">
-            <Link to={`/`} className="logo-header">
+            <Link to={`/`} className="">
               <img
                 alt="logo"
                 className="logo"
-                src="/images/logo/shreeva-logo.png"
-                width={304}
+                src="/images/logo/logo-rec.png"
+                width={204}
                 height={35}
               />
             </Link>
@@ -190,10 +192,12 @@ export default function Header1({ fullWidth = false }) {
         </div>
       
       </div>
-        <div className="bg-surface">
+      </div>
+        <div className="">
           <div className="col-xl-12 d-none d-xl-block">
-            <nav className="box-navigation text-center">
-              <ul className="box-nav-ul d-flex align-items-center justify-content-center">
+            <nav className="box-navigation text-center text-white">
+              <ul className="box-nav-ul d-flex align-items-center justify-content-center bg-light">
+
                 <Nav />
               </ul>
             </nav>

@@ -1,14 +1,38 @@
 import React, { useEffect, useState } from "react";
-
 import { Link } from "react-router-dom";
-import CountdownTimer from "../common/Countdown";
+// import CountdownTimer from "../common/Countdown"; // not used
 
 import { useContextElement } from "@/context/Context";
+
 export default function ProductsCards6({ product }) {
-  const [currentImage, setCurrentImage] = useState(product.imgSrc);
+  // Normalize fields coming from backend
+  const id = product?.id || product?._id;
+  const title = product?.title || product?.name || "Product";
+  const slug = product?.slug || id;
+  const images = Array.isArray(product?.images) ? product.images : [];
+  const hoverImage = images[1] || images[0];
+  const thumb =
+    product?.images?.[0] ||
+    product?.thumbnail ||
+    "/images/placeholder.jpg";
+
+  console.log("Thumbnail picked:", thumb);
+
+  const [currentImage, setCurrentImage] = useState(thumb);
+
+  // price handling (INR + “Price on request” when 0/undefined)
+  const price = Number(product?.price ?? 0);
+  const oldPrice = Number(product?.oldPrice ?? 0);
+  const showOld = oldPrice > price && price > 0;
+  const isOnSale = showOld; // or product?.isOnSale
+
+  // short description fallback
+  const short =
+    product?.shortDescription ||
+    product?.metaDescription ||
+    "";
 
   const {
-    setQuickAddItem,
     addToWishlist,
     isAddedtoWishlist,
     addToCompareItem,
@@ -19,128 +43,119 @@ export default function ProductsCards6({ product }) {
   } = useContextElement();
 
   useEffect(() => {
-    setCurrentImage(product.imgSrc);
-  }, [product]);
+    setCurrentImage(thumb);
+  }, [thumb]);
+
   return (
     <div
       className="card-product style-list"
-      data-availability="In stock"
-      data-brand="gucci"
+      data-availability={product?.manageStock ? "In stock" : "Made to order"}
+      data-brand={product?.brand || "Shreeva Jewels"}
     >
       <div className="card-product-wrapper">
-        <Link to={`/product-detail/${product.slug}`} className="product-img">
+        <Link to={`/product-detail/${slug}`} className="product-img">
           <img
-            className="lazyload img-product"
+            className="img-product"
             src={currentImage}
-            alt={product.title}
+            alt={title}
             width={600}
             height={800}
+            loading="lazy"
+            onMouseEnter={() => setCurrentImage(hoverImage)}
+            onMouseLeave={() => setCurrentImage(thumb)}
           />
+          {/* Optional separate hover <img> layer if your CSS expects it */}
           <img
-            className="lazyload img-hover"
-            src={product.imgHover}
-            alt={product.title}
+            className="img-hover"
+            src={hoverImage}
+            alt={title}
             width={600}
             height={800}
+            loading="lazy"
           />
         </Link>
-        {product.isOnSale && (
+
+        {isOnSale && (
           <div className="on-sale-wrap">
-            <span className="on-sale-item">-25%</span>
+            <span className="on-sale-item">
+              {/* simple discount calc */}
+              {Math.max(0, Math.round(((oldPrice - price) / oldPrice) * 100))}%
+            </span>
           </div>
         )}
       </div>
+
       <div className="card-product-info">
-        <Link to={`/product-detail/${product.slug}`} className="title link">
-          {product.title}
+        <Link to={`/product-detail/${slug}`} className="title link">
+          {title}
         </Link>
+
         <span className="price current-price">
-          {product.oldPrice && (
-            <span className="old-price">${product.oldPrice.toFixed(2)}</span>
-          )}{" "}
-          ${product.price?.toFixed(2)}
+          {showOld && <span className="old-price">₹{oldPrice.toLocaleString("en-IN")}</span>}{" "}
+          {price > 0 ? (
+            <>₹{price.toLocaleString("en-IN")}</>
+          ) : (
+            <span className="text-secondary">Price on request</span>
+          )}
         </span>
-        <p className="description text-secondary text-line-clamp-2">
-          The garments labelled as Committed are products that have been
-          produced using sustainable fibres or processes, reducing their
-          environmental impact.
-        </p>
+
+        {short && (
+          <p className="description text-secondary text-line-clamp-2">
+            {short}
+          </p>
+        )}
+
         <div className="variant-wrap-list">
-          {product.colors && (
-            <ul className="list-color-product">
-              {product.colors.map((color, index) => (
-                <li
-                  key={index}
-                  className={`list-color-item color-swatch ${
-                    currentImage == color.imgSrc ? "active" : ""
-                  } `}
-                  onMouseOver={() => setCurrentImage(color.imgSrc)}
-                >
-                  <span className={`swatch-value ${color.bgColor}`} />
-                  <img
-                    className="lazyload"
-                    src={color.imgSrc}
-                    alt="color variant"
-                    width={600}
-                    height={800}
-                  />
-                </li>
-              ))}
-            </ul>
-          )}
-          {product.sizes && (
-            <div className="size-box list-product-btn">
-              <span className="size-item box-icon">S</span>
-              <span className="size-item box-icon">M</span>
-              <span className="size-item box-icon">L</span>
-              <span className="size-item box-icon">XL</span>
-              <span className="size-item box-icon disable">XXL</span>
-            </div>
-          )}
+          {/* If you later map color thumbnails, keep this block.
+              For now we skip since API doesn’t provide it reliably. */}
+
           <div className="list-product-btn">
-            <a
-              onClick={() => addProductToCart(product.id)}
+            <button
+              type="button"
+              onClick={() => addProductToCart(id)}
               className="btn-main-product"
             >
-              {isAddedToCartProducts(product.id)
-                ? "Already Added"
-                : "Add To cart"}
-            </a>
-            <a
-              onClick={() => addToWishlist(product.id)}
+              {isAddedToCartProducts(id) ? "Already Added" : "Add To cart"}
+            </button>
+
+            <button
+              type="button"
+              onClick={() => addToWishlist(id)}
               className="box-icon wishlist btn-icon-action"
+              aria-label="Add to wishlist"
             >
               <span className="icon icon-heart" />
               <span className="tooltip">
-                {isAddedtoWishlist(product.id)
-                  ? "Already Wishlished"
-                  : "Wishlist"}
+                {isAddedtoWishlist(id) ? "Already Wishlisted" : "Wishlist"}
               </span>
-            </a>
-            <a
-              href="#compare"
+            </button>
+
+            <button
+              type="button"
               data-bs-toggle="offcanvas"
-              aria-controls="compare"
-              onClick={() => addToCompareItem(product.id)}
+              data-bs-target="#compare"
+              onClick={() => addToCompareItem(id)}
               className="box-icon compare btn-icon-action"
+              aria-controls="compare"
+              aria-label="Add to compare"
             >
               <span className="icon icon-gitDiff" />
               <span className="tooltip">
-                {" "}
-                {isAddedtoCompareItem(product.id)
-                  ? "Already compared"
-                  : "Compare"}
+                {isAddedtoCompareItem(id) ? "Already compared" : "Compare"}
               </span>
-            </a>
-            <a
-              href="#quickView"
-              onClick={() => setQuickViewItem(product)}
+            </button>
+
+            <button
+              type="button"
               data-bs-toggle="modal"
+              data-bs-target="#quickView"
+              onClick={() => setQuickViewItem(product)}
               className="box-icon quickview tf-btn-loading"
+              aria-label="Quick view"
             >
               <span className="icon icon-eye" />
               <span className="tooltip">Quick View</span>
-            </a>
+            </button>
           </div>
         </div>
       </div>
