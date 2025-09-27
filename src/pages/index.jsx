@@ -91,7 +91,7 @@ export default function HomePage() {
       </Suspense>
 
       <Suspense fallback={<Loader />}>
-        <Lookbook />
+        {/* <Lookbook /> */}
       </Suspense>
 
       <Suspense fallback={<Loader />}>

@@ -19,14 +19,14 @@ export default function BannerCollection() {
           className="lazyload d-block w-100"
           data-src={
             isMobile
-              ? "/images/banner/Offer-mobile.png"
-              : "/images/banner/Offer.png"
+              ? "images/banner/banner1.png"
+              : "images/banner/banner1.png"
           }
           alt="banner-cls"
           src={
             isMobile
-              ? "/images/banner/Offer-mobile.png"
-              : "/images/banner/Offer.png"
+              ? "images/banner/banner1.png"
+              : "images/banner/banner1.png"
           }
           width={isMobile ? 768 : 1600}
           height={isMobile ? 400 : 500}

@@ -5,15 +5,15 @@ import { Swiper, SwiperSlide } from "swiper/react";
 export default function Features({ parentClass = "flat-spacing" }) {
   return (
     <section className={parentClass}>
-      <div className="container ">
+      <div className="container">
         <div className="heading-section text-center">
           <h3 className="heading wow fadeInUp text-primary">
-             Our Features
+            Why Choose Shreeva Jewels
           </h3>
           <p className="subheading wow fadeInUp">
-            Our products are crafted with ethically sourced, cruelty-free
-            ingredients, ensuring luxury, effectiveness, and sustainability.
-            Experience skincare that truly cares for you! 
+            Each piece is crafted with precision, timeless elegance, and 
+            ethically sourced materials. From modern designs to classic artistry, 
+            our jewelry reflects unmatched quality and enduring beauty. 
           </p>
         </div>
         <Swiper
