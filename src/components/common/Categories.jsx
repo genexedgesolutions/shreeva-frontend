@@ -3,14 +3,13 @@ import React, { useEffect, useState } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation } from "swiper/modules";
 import { Link } from "react-router-dom";
-import api from "../../lib/api"; // adjust relative path if needed
+import api from "../../lib/api";
 import "swiper/css";
 import "swiper/css/navigation";
 
 export default function Categories({ parentClass = "flat-spacing pt-0" }) {
   const [items, setItems] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
 
   const getImageUrl = (raw) => {
     if (!raw) return "";
@@ -30,7 +29,8 @@ export default function Categories({ parentClass = "flat-spacing pt-0" }) {
         const mapped = arr
           .map((c) => {
             const title = c.name ?? c.title ?? "Untitled";
-            const imageRaw = c.thumbnail ?? (Array.isArray(c.images) && c.images.length ? c.images[0] : null);
+            const imageRaw =
+              c.thumbnail ?? (Array.isArray(c.images) && c.images.length ? c.images[0] : null);
             const imgSrc = getImageUrl(imageRaw) || "";
             const itemsCount =
               typeof c.childrenCount === "number"
@@ -49,16 +49,12 @@ export default function Categories({ parentClass = "flat-spacing pt-0" }) {
               raw: c,
             };
           })
-          .filter((it) => it.imgSrc && it.imgSrc.length > 0);
+          .filter((it) => it.imgSrc && it.imgSrc.length > 0)
+          .sort((a, b) => a.title.localeCompare(b.title, "en", { sensitivity: "base" }));
 
-        mapped.sort((a, b) => a.title.localeCompare(b.title, "en", { sensitivity: "base" }));
-
-        if (!mounted) return;
-        setItems(mapped);
+        if (mounted) setItems(mapped);
       } catch (err) {
         console.error("Categories fetch error:", err);
-        if (!mounted) return;
-        setError(err);
       } finally {
         if (mounted) setLoading(false);
       }
@@ -70,89 +66,133 @@ export default function Categories({ parentClass = "flat-spacing pt-0" }) {
     };
   }, []);
 
-  if (loading) {
-    return (
-      <section className={parentClass}>
-        <div className="pe-5 ps-5">
-          <div className="heading-section text-center">
-            <h3 className="heading">Loading categories…</h3>
-          </div>
-        </div>
-      </section>
-    );
-  }
-
-  if (error || !items.length) {
+  if (loading || !items.length) {
     return null;
   }
 
   return (
     <section className={parentClass}>
-      <div className="pe-5 ps-5">
-        <div className="heading-section text-center">{/* optional heading */}</div>
-        <div className="flat-collection-circle">
+      <div className="container">
+        <div className="flat-collection-circle position-relative">
           <Swiper
-            className="tf-sw-categories pe-5 ps-5"
-            slidesPerView={3}
-            breakpoints={{
-              1424: { slidesPerView: 3 },
-              1024: { slidesPerView: 3 },
-              668: { slidesPerView: 3 },
-              0: { slidesPerView: 3 },
-            }}
-            spaceBetween={20}
+            className="tf-sw-categories"
             modules={[Navigation]}
             navigation={{ prevEl: ".snbp1", nextEl: ".snbn1" }}
+            spaceBetween={16}
+            breakpoints={{
+              0: { slidesPerView: 2, spaceBetween: 12 },        // 📱 phones → 2 cards
+              480: { slidesPerView: 2, spaceBetween: 14 },      // small phones / phablets
+              768: { slidesPerView: 3, spaceBetween: 16 },      // tablets
+              1200: { slidesPerView: 4, spaceBetween: 18 },     // desktops
+            }}
           >
             {items.map((item) => (
               <SwiperSlide key={item.id}>
-                <div className="collection-circle hover-img" style={{ textAlign: "center" }}>
+                <div className="collection-card hover-img text-center">
                   <Link
                     to={`/shop-collection/${item.slug ?? item.id}`}
-                    className="img-style"
-                    style={{
-                      display: "block",
-                      width: "400px",
-                      height: "400px",
-                      margin: "0 auto",
-                      overflow: "hidden",
-                      borderRadius: "8px",
-                      background: "#f7f7f7",
-                    }}
+                    className="tile img-style"
+                    aria-label={item.title}
                   >
                     <img
                       src={item.imgSrc}
                       alt={item.alt}
-                      style={{
-                        width: "100%",
-                        height: "100%",
-                        objectFit: "cover",
-                        objectPosition: "center",
-                        display: "block",
-                      }}
+                      loading="lazy"
                     />
                   </Link>
-                  <div className="collection-content text-center" style={{ marginTop: "8px" }}>
-                    <div>
-                      <Link to={`/shop-collection/${item.slug ?? item.id}`} className="cls-title">
-                        <h6 className="text">{item.title}</h6>
-                        <i className="icon icon-arrowUpRight" />
-                      </Link>
-                    </div>
+
+                  <div className="collection-content mt-2">
+                    <Link
+                      to={`/shop-collection/${item.slug ?? item.id}`}
+                      className="cls-title d-inline-flex align-items-center gap-1"
+                    >
+                      <h6 className="text m-0">{item.title}</h6>
+                      <i className="icon icon-arrowUpRight" />
+                    </Link>
                   </div>
                 </div>
               </SwiperSlide>
             ))}
           </Swiper>
 
-          <div className="nav-prev-categories d-none d-lg-flex nav-sw style-line nav-sw-left snbp1">
+          {/* Nav arrows (hidden on mobile via CSS) */}
+          <button
+            className="nav-prev-categories nav-sw style-line nav-sw-left snbp1"
+            aria-label="Previous"
+          >
             <i className="icon icon-arrLeft" />
-          </div>
-          <div className="nav-next-categories d-none d-lg-flex nav-sw style-line nav-sw-right snbn1">
+          </button>
+          <button
+            className="nav-next-categories nav-sw style-line nav-sw-right snbn1"
+            aria-label="Next"
+          >
             <i className="icon icon-arrRight" />
-          </div>
+          </button>
         </div>
       </div>
+
+      {/* Scoped styles for the slider tiles */}
+      <style jsx>{`
+        .collection-card {
+          width: 100%;
+        }
+        .tile {
+          display: block;
+          width: 100%;
+          /* Square tiles that scale fluidly */
+          aspect-ratio: 1 / 1;
+          border-radius: 12px;
+          overflow: hidden;
+          background: #f7f7f7;
+        }
+        /* Fallback if aspect-ratio isn't supported */
+        @supports not (aspect-ratio: 1 / 1) {
+          .tile {
+            position: relative;
+            height: 0;
+            padding-top: 100%;
+          }
+          .tile > img {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+          }
+        }
+        .tile > img {
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+          object-position: center;
+          display: block;
+          transition: transform 0.3s ease;
+        }
+        .tile:hover > img {
+          transform: scale(1.03);
+        }
+
+        .nav-sw {
+          position: absolute;
+          top: 50%;
+          transform: translateY(-50%);
+          z-index: 2;
+          display: none; /* hidden on mobile; shown >= 992px */
+          align-items: center;
+          justify-content: center;
+          width: 44px;
+          height: 44px;
+          border-radius: 999px;
+          background: #fff;
+          border: 1px solid #eaeaea;
+          box-shadow: 0 6px 18px rgba(0,0,0,0.06);
+        }
+        .nav-sw-left { left: -8px; }
+        .nav-sw-right { right: -8px; }
+
+        @media (min-width: 992px) {
+          .nav-sw { display: inline-flex; }
+        }
+      `}</style>
     </section>
   );
 }
