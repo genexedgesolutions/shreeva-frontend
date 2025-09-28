@@ -103,7 +103,8 @@ export default function Footer1({
 
   return (
     <>
-      <footer
+      <div className="footer-section">
+        <footer
         id="footer"
         className={`footer ${dark ? "bg-gradient" : ""} ${
           hasPaddingBottom ? "has-pb" : ""
@@ -289,18 +290,18 @@ export default function Footer1({
           </div>
 
           {/* Bottom bar */}
-          <div className={`footer-bottom ${dark ? "bg-white" : ""}`}>
+          <div className={`footer-bottom ${dark ? "text-white" : ""}`}>
   <div className="container">
-    <div className="row align-items-center py-3">
+    <div className="row align-items-center py-3 text-white">
       {/* Left Section */}
-      <div className="col-md-6 text-start">
-        <p className={`mb-1 ${dark ? "text-black" : ""}`}>
+      <div className="col-md-6 text-start text-white">
+        <p className={`mb-1 ${dark ? "text-white" : ""}`}>
           ©{new Date().getFullYear()} Shreeva Jewels. All Rights Reserved.
         </p>
         <button
           className="btn p-0 text-decoration-underline"
           onClick={() => navigate("/blazync-technologies")}
-          style={{ fontSize: 13 }}
+          style={{ fontSize: 13,color:"white" }}
           aria-label="Developed & Managed by Blazync Technologies"
         >
           Developed &amp; Managed by Blazync Technologies
@@ -322,8 +323,17 @@ export default function Footer1({
 </div>
 
           {/* /Bottom bar */}
+          <style jsx>{`
+         .footer-section { background: #fff;padding: 20px; }
+          .footer { border-top: 1px solid rgba(0,0,0,0.1); border-radius: 12px; overflow: hidden; }
+          @media (max-width: 575px) {
+           .footer-section { background: #fff;padding: 0px; }
+            .footer { border-top: 1px solid rgba(0,0,0,0.1); border-radius: 0px; overflow: hidden; }
+          }
+          `}</style>
         </div>
       </footer>
+      </div>
 
       <ScrollTop hasPaddingBottom={hasPaddingBottom} />
       <ToolbarBottom />

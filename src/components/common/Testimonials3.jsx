@@ -30,17 +30,30 @@ export default function Testimonials3() {
         >
           {testimonialsShreeva.map((testimonial) => (
             <SwiperSlide className="swiper-slide" key={testimonial.id}>
-              <div className="testimonial-item style-2 style-3 bg-primary">
+              <div className="testimonial-item style-2 style-3 bg-gradient">
               {testimonial.id === 1  && <img className="quote-mark" src="/images/logo/quote_icon.png" alt="" />}
-              <div className="box-avt">
-                  <div className="avatar avt-80 round ms-3">
+             
+                <div className="content-top pt-4">
+                 
+                  <p className="text-caption-1 text-white">{testimonial.text}</p>
+                 
+                  {/* <div className="list-star-default">
+                    <i className="icon icon-star" />
+                    <i className="icon icon-star" />
+                    <i className="icon icon-star" />
+                    <i className="icon icon-star" />
+                    <i className="icon icon-star" />
+                  </div> */}
+                </div>
+                 <div className="box-avt">
+                  {/* <div className="avatar avt-80 round ms-3">
                     <img
                       alt="avt"
-                      src={testimonial.avatar}
+                      src={testimonial.avatar ?? "https://dummy.genexedge.in/?size=600x400&bg=000&fg=fff&format=png&text=Hello+World"}
                       width={130}
                       height={130}
                     />
-                  </div>
+                  </div> */}
                   <div className="box-price">
                     <div className="box-rate-author">
                     <div className="box-author">
@@ -87,19 +100,6 @@ export default function Testimonials3() {
                     <div className="text-caption-1 fst-italic text-white">{testimonial.location}</div>
                   </div>
                 </div>
-                <div className="content-top pt-4">
-                 
-                  <p className="text-caption-1 text-white">{testimonial.text}</p>
-                 
-                  {/* <div className="list-star-default">
-                    <i className="icon icon-star" />
-                    <i className="icon icon-star" />
-                    <i className="icon icon-star" />
-                    <i className="icon icon-star" />
-                    <i className="icon icon-star" />
-                  </div> */}
-                </div>
-                
               </div>
             </SwiperSlide>
           ))}

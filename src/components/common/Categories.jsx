@@ -1,198 +1,285 @@
-// frontend/src/components/Categories.jsx
+// src/components/HeroCategoriesGrid.jsx
 import React, { useEffect, useState } from "react";
-import { Swiper, SwiperSlide } from "swiper/react";
-import { Navigation } from "swiper/modules";
 import { Link } from "react-router-dom";
-import api from "../../lib/api";
-import "swiper/css";
-import "swiper/css/navigation";
+import api from "@/lib/api";
 
-export default function Categories({ parentClass = "flat-spacing pt-0" }) {
-  const [items, setItems] = useState([]);
-  const [loading, setLoading] = useState(true);
+// Optional: normalize image url (agar aap CDN proxy use karte ho to yahan tweak kar lo)
+const getImageUrl = (raw) => (typeof raw === "string" ? raw : "");
 
-  const getImageUrl = (raw) => {
-    if (!raw) return "";
-    const s = Array.isArray(raw) ? String(raw[0]) : String(raw);
-    const url = s.split(" !")[0].trim();
-    return url || "";
-  };
+export default function HeroCategoriesGrid() {
+const [items, setItems] = useState([]);
+const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    let mounted = true;
-    const fetchCategories = async () => {
-      try {
-        const res = await api.get("/categories", { params: { limit: 100 } });
-        const raw = res?.data?.categories ?? res?.data ?? res?.categories ?? [];
-        const arr = Array.isArray(raw) ? raw : [];
+useEffect(() => {
+let mounted = true;
 
-        const mapped = arr
-          .map((c) => {
-            const title = c.name ?? c.title ?? "Untitled";
-            const imageRaw =
-              c.thumbnail ?? (Array.isArray(c.images) && c.images.length ? c.images[0] : null);
-            const imgSrc = getImageUrl(imageRaw) || "";
-            const itemsCount =
-              typeof c.childrenCount === "number"
-                ? c.childrenCount
-                : Array.isArray(c.children)
-                ? c.children.length
-                : 0;
+const fetchCategories = async () => {
+try {
+const res = await api.get("/categories", { params: { limit: 100 } });
+const raw = res?.data?.categories ?? res?.data ?? res?.categories ?? [];
+const arr = Array.isArray(raw) ? raw : [];
 
-            return {
-              id: c._id ?? c.id ?? title,
-              title,
-              imgSrc,
-              alt: title,
-              itemsCount,
-              slug: c.slug ?? c.name?.toLowerCase().replace(/\s+/g, "-"),
-              raw: c,
-            };
-          })
-          .filter((it) => it.imgSrc && it.imgSrc.length > 0)
-          .sort((a, b) => a.title.localeCompare(b.title, "en", { sensitivity: "base" }));
+const mapped = arr
+.map((c) => {
+const title = c.name ?? c.title ?? "Untitled";
+const imageRaw =
+c.thumbnail ??
+(Array.isArray(c.images) && c.images.length ? c.images[0] : null);
+const imgSrc = getImageUrl(imageRaw) || "";
+const itemsCount =
+typeof c.childrenCount === "number"
+? c.childrenCount
+: Array.isArray(c.children)
+? c.children.length
+: 0;
 
-        if (mounted) setItems(mapped);
-      } catch (err) {
-        console.error("Categories fetch error:", err);
-      } finally {
-        if (mounted) setLoading(false);
-      }
-    };
+return {
+id: c._id ?? c.id ?? title,
+title,
+imgSrc,
+alt: title,
+count: itemsCount,
+slug: c.slug ?? title.toLowerCase().replace(/\s+/g, "-"),
+};
+})
+// show only categories that have an image
+.filter((it) => it.imgSrc && it.imgSrc.length > 0)
+// sort alphabetically
+.sort((a, b) => a.title.localeCompare(b.title, "en", { sensitivity: "base" }));
 
-    fetchCategories();
-    return () => {
-      mounted = false;
-    };
-  }, []);
+if (mounted) setItems(mapped);
+} catch (err) {
+console.error("Categories fetch error:", err);
+} finally {
+if (mounted) setLoading(false);
+}
+};
 
-  if (loading || !items.length) {
-    return null;
-  }
+fetchCategories();
+return () => {
+mounted = false;
+};
+}, []);
 
-  return (
-    <section className={parentClass}>
-      <div className="container mt-3">
-        <div className="flat-collection-circle position-relative">
-          <Swiper
-            className="tf-sw-categories"
-            modules={[Navigation]}
-            navigation={{ prevEl: ".snbp1", nextEl: ".snbn1" }}
-            spaceBetween={16}
-            breakpoints={{
-              0: { slidesPerView: 2, spaceBetween: 12 },        // 📱 phones → 2 cards
-              480: { slidesPerView: 2, spaceBetween: 14 },      // small phones / phablets
-              768: { slidesPerView: 3, spaceBetween: 16 },      // tablets
-              1200: { slidesPerView: 4, spaceBetween: 18 },     // desktops
-            }}
-          >
-            {items.map((item) => (
-              <SwiperSlide key={item.id}>
-                <div className="collection-card hover-img text-center">
-                  <Link
-                    to={`/collections/${item.slug ?? item.id}`}
-                    className="tile img-style"
-                    aria-label={item.title}
-                  >
-                    <img
-                      src={item.imgSrc}
-                      alt={item.alt}
-                      loading="lazy"
-                    />
-                  </Link>
+const cardsToShow = items; // all categories; CTA will be appended as last card.
 
-                  <div className="collection-content mt-2">
-                    <Link
-                      to={`/shop-collection/${item.slug ?? item.id}`}
-                      className="cls-title d-inline-flex align-items-center gap-1"
-                    >
-                      <h6 className="text m-0">{item.title}</h6>
-                      <i className="icon icon-arrowUpRight" />
-                    </Link>
-                  </div>
-                </div>
-              </SwiperSlide>
-            ))}
-          </Swiper>
+return (
+<section className="hero-grid-wrap">
+  <div className="heading-section text-center wow fadeInUp">
+    <h3 className="heading">Shreeva Collections</h3>
+    <p className="subheading text-dark">
+      Explore our newly launched collections of Gold, Diamonds, Silver, Bridal & more
+    </p>
+  </div>
+  <div className="hero-grid">
+    {loading
+    ? Array.from({ length: 8 }).map((_, i) => (
+    <div key={`sk-${i}`} className="card skeleton" />
+    ))
+    : (
+    <>
+      {cardsToShow.map((cat) => (
+      <Link key={cat.id} to={`/collections/${cat.slug}`} className="card img-card" aria-label={cat.title}>
+      <img src={cat.imgSrc} alt={cat.alt} loading="lazy" />
+      <div className="overlay">
+        <div className="title">{cat.title}</div>
+        {typeof cat.count === "number" && cat.count > 0 && (
+        <div className="meta">{cat.count} items</div>
+        )}
+      </div>
+      </Link>
+      ))}
 
-          {/* Nav arrows (hidden on mobile via CSS) */}
-          <button
-            className="nav-prev-categories nav-sw style-line nav-sw-left snbp1"
-            aria-label="Previous"
-          >
-            <i className="icon icon-arrLeft" />
-          </button>
-          <button
-            className="nav-next-categories nav-sw style-line nav-sw-right snbn1"
-            aria-label="Next"
-          >
-            <i className="icon icon-arrRight" />
-          </button>
+      {/* Final CTA card */}
+      <div className="card cta-card">
+        <div className="cta-inner">
+          <h3>Explore More<br />Collections</h3>
+          <p>Gold • Diamonds • Silver • Bridal & more</p>
+          <Link to="/collections" className="cta-btn">Explore Now</Link>
         </div>
       </div>
+    </>
+    )
+    }
+  </div>
 
-      {/* Scoped styles for the slider tiles */}
-      <style jsx>{`
-        .collection-card {
-          width: 100%;
+  <style jsx>
+    {
+      ` .hero-grid-wrap {
+        padding: 3px 3px 3px;
+        margin-top: 12px;
+        margin-bottom: 24px;
+
+      }
+
+      .hero-grid {
+        max-width: 1400px;
+        margin: 0 auto;
+        display: grid;
+        gap: 16px;
+
+        grid-template-columns: repeat(3, 1fr);
+      }
+
+
+      /* responsive columns */
+      @media (max-width: 576px) {
+        .hero-grid {
+          grid-template-columns: repeat(2, 1fr);
         }
-        .tile {
-          display: block;
-          width: 100%;
-          /* Square tiles that scale fluidly */
-          aspect-ratio: 1 / 1;
-          border-radius: 12px;
-          overflow: hidden;
-          background: #f7f7f7;
+
+        .hero-grid card {
+          width: 100px;
+          height: 100px;
         }
-        /* Fallback if aspect-ratio isn't supported */
-        @supports not (aspect-ratio: 1 / 1) {
-          .tile {
-            position: relative;
-            height: 0;
-            padding-top: 100%;
+
+        .cta-inner {
+          text-align: center;
+          padding: 8px;
+        }
+          .cta-inner p{
+          font-size: 10px !important;
           }
-          .tile > img {
-            position: absolute;
-            inset: 0;
-            width: 100%;
-            height: 100%;
-          }
+           .cta-inner h3 {
+           font-size: 15px !important;
+           }
+      }
+
+      @media (min-width: 992px) {
+        .hero-grid {
+          grid-template-columns: repeat(2, 1fr);
         }
-        .tile > img {
-          width: 100%;
-          height: 100%;
-          object-fit: cover;
-          object-position: center;
-          display: block;
-          transition: transform 0.3s ease;
+      }
+
+      @media (min-width: 1280px) {
+        .hero-grid {
+          grid-template-columns: repeat(4, 1fr);
         }
-        .tile:hover > img {
-          transform: scale(1.03);
+      }
+
+      .card {
+        position: relative;
+        border-radius: 16px;
+        overflow: hidden;
+        background: #fff;
+        box-shadow: 0 10px 24px rgba(0, 0, 0, 0.08);
+
+        aspect-ratio: 1 / 1;
+      }
+
+      /* Image card */
+      .img-card img {
+        width: 100%;
+        height: 100%;
+        display: block;
+        object-fit: cover;
+        transition: transform .35s ease;
+      }
+
+      .img-card:hover img {
+        transform: scale(1.04);
+      }
+
+      .overlay {
+        position: absolute;
+        inset: auto 0 0 0;
+        padding: 12px 14px;
+        background: linear-gradient(180deg, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, .55) 100%);
+        color: #fff;
+        display: flex;
+        align-items: flex-end;
+        gap: 6px;
+        flex-wrap: wrap;
+        min-height: 38%;
+      }
+
+      .overlay .title {
+        font-weight: 700;
+        font-size: 16px;
+        letter-spacing: .2px;
+      }
+
+      .overlay .meta {
+        margin-left: auto;
+        font-size: 12px;
+        opacity: .9;
+        background: rgba(255, 255, 255, .16);
+        padding: 4px 8px;
+        border-radius: 999px;
+        border: 1px solid rgba(255, 255, 255, .2);
+      }
+
+      /* CTA card */
+      .cta-card {
+        background:
+          radial-gradient(80% 60% at 80% 20%, rgba(255, 214, 153, .35), transparent 55%),
+          linear-gradient(135deg, #3b2b1b 0%, #6b4a28 100%);
+        color: #fff;
+        display: grid;
+        place-items: center;
+      }
+
+      .cta-inner {
+        text-align: center;
+        padding: 18px;
+      }
+
+      .cta-inner h3 {
+        margin: 0 0 8px;
+        font-weight: 800;
+        letter-spacing: .2px;
+        line-height: 1.15;
+        font-size: clamp(20px, 2.4vw, 28px);
+        color: #ffdf9e;
+      }
+
+      .cta-inner p {
+        margin: 0 0 14px;
+        opacity: .9;
+        font-size: 14px;
+      }
+
+      .cta-btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        height: 42px;
+        padding: 0 18px;
+        border-radius: 10px;
+        background: linear-gradient(90deg, #c29863, #e8cda5);
+        color: #2b1f12;
+        font-weight: 700;
+        text-decoration: none;
+        border: 1px solid #e3be86;
+        box-shadow: 0 10px 20px rgba(226, 187, 129, .35);
+        transition: transform .15s ease, box-shadow .15s ease;
+      }
+
+      .cta-btn:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 14px 28px rgba(226, 187, 129, .45);
+      }
+
+      /* Skeletons */
+      .skeleton {
+        background: linear-gradient(90deg, #f2f2f2 25%, #ededed 37%, #f2f2f2 63%);
+        background-size: 400% 100%;
+        animation: shimmer 1.2s infinite;
+      }
+
+      @keyframes shimmer {
+        0% {
+          background-position: 100% 0;
         }
 
-        .nav-sw {
-          position: absolute;
-          top: 50%;
-          transform: translateY(-50%);
-          z-index: 2;
-          display: none; /* hidden on mobile; shown >= 992px */
-          align-items: center;
-          justify-content: center;
-          width: 44px;
-          height: 44px;
-          border-radius: 999px;
-          background: #fff;
-          border: 1px solid #eaeaea;
-          box-shadow: 0 6px 18px rgba(0,0,0,0.06);
+        100% {
+          background-position: 0 0;
         }
-        .nav-sw-left { left: -8px; }
-        .nav-sw-right { right: -8px; }
+      }
 
-        @media (min-width: 992px) {
-          .nav-sw { display: inline-flex; }
-        }
-      `}</style>
-    </section>
-  );
+      `
+    }
+  </style>
+</section>
+);
 }
