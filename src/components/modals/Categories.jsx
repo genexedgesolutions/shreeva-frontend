@@ -36,15 +36,15 @@ export default function Categories() {
                   aria-expanded="true"
                   aria-controls={category.slug}
                 >
-                  <img
+                  {/* <img
                     className="avt"
                     alt="avt"
-                    src={category.image}
+                    src={category.images[0]}
                     width={48}
                     height={48}
-                  />
+                  /> */}
                   <Link to = {`/collections/${category.slug}`} className="title">{category.name}</Link>
-                  <span className="icon icon-arrow-down" />
+                  {/* <span className="icon icon-arrow-down" /> */}
                 </div>
                 <div id={category.slug} className="collapse">
                   <ul className="facet-body">

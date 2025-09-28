@@ -104,7 +104,7 @@ useEffect(() => {
           <div>
             <h5 className="mb_16">Feature keywords Today</h5>
             <ul className="list-tags">
-              {["Hair Care", "Skin Care"].map((keyword) => (
+              {["jewelry", "Rings"].map((keyword) => (
                 <li key={keyword}>
                   <a
                     href="#"
