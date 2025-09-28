@@ -790,7 +790,7 @@
       }
       .image-select > .dropdown-menu {
         &::before {
-          display: none;
+          display: block;
         }
       }
       .tf-currencies,

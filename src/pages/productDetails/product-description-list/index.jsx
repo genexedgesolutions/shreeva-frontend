@@ -14,9 +14,12 @@ import { getSingleProduct } from "@/api/product";
 
 export default function ProductDescriptionListPage() {
   const { slug } = useParams();
+  
   const [product, setProduct] = useState(null);
 
   const formatProductData = (prod) => {
+    console.log("Raw product data:", prod);
+    
     const variants =
       prod.productType === "variant" && prod.variants
         ? prod.variants.map((variant) => ({
@@ -24,13 +27,13 @@ export default function ProductDescriptionListPage() {
             size: variant.size || "Default Size",
             inventory: variant.inventory || 0,
             offerPrice:
-              variant.offerprice ||
-              prod.offerPrice ||
-              prod.finalPrice ||
+              variant.salePrice ||
+              prod.salePrice ||
+              prod.price ||
               prod.price ||
               0,
             finalPrice:
-              variant.finalprice || prod.finalPrice || prod.price || 0,
+              variant.price || prod.price || prod.price || 0,
             category: prod.category || "General",
           }))
         : [];
@@ -48,7 +51,7 @@ export default function ProductDescriptionListPage() {
     return {
       _id: prod._id,
       productId: prod._id,
-      name: prod.name,
+      name: prod.title,
       productType: prod.productType,
       slug: prod.slug || "unknown-product",
       price:
@@ -98,7 +101,8 @@ export default function ProductDescriptionListPage() {
   const fetchProduct = async () => {
     try {
       const fetchedProduct = await getSingleProduct(slug);
-      const formattedProduct = formatProductData(fetchedProduct.product);
+      
+      const formattedProduct = formatProductData(fetchedProduct.products);
       setProduct(formattedProduct);
     } catch (error) {
       console.error("Error fetching product:", error);
@@ -114,7 +118,7 @@ export default function ProductDescriptionListPage() {
   }
 
   const metadata = {
-    title: product.name || "Product Details",
+    name: product.name || "Product Details",
     description:
       product.description ||
       "Discover the best products with detailed descriptions and amazing offers.",
@@ -128,6 +132,7 @@ export default function ProductDescriptionListPage() {
       <Breadcumb product={product} />
       <Details1 product={product} />
       {/* <DescriptionList product={product} /> */}
+      
       <RelatedProducts product={product} />
       <Footer1 hasPaddingBottom />
     </>

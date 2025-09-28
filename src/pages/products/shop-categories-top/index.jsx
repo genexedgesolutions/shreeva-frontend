@@ -23,19 +23,19 @@ export default function ShopCategoriesTopPage1() {
     const fetchCategory = async () => {
       try {
         const res = await getCategoryBySlug(slug); // { category, products }
-
-        console.log("✅ API Response for slug:", slug, res);
-
+        
         if (res?.category) {
           const c = res.category;
-
+          
+          
           const formatted = {
             id: c._id,
-            imgSrc: c.thumbnail || c.images?.[0] || "/images/placeholder.jpg",
+            imgSrc: c.thumbnail || c.images?.[0] || "https://dummy.genexedge.in/?size=600x400&bg=000&fg=fff&format=png&text=Hello+World",
             alt: c.name,
             title: c.name,
             slug: c.slug,
           };
+          // console.log(formatted);
 
           setCurrentCollection(formatted);
           setProducts(res.products || []);
@@ -65,21 +65,21 @@ export default function ShopCategoriesTopPage1() {
       <Header1 />
 
       {/* Banner */}
-      <div className="page-title bg-primary">
+      <div className="page-title bg-gradient text-white h-10">
         <div className="container-full">
           <div className="row">
             <div className="col-12 text-center text-white py-5">
-              <h3 className="heading">{currentCollection.title}</h3>
+              <h3 className="heading text-white">{currentCollection.title}</h3>
               <ul className="breadcrumbs d-flex align-items-center justify-content-center">
                 <li>
-                  <Link className="link" to={`/`}>
+                  <Link className="link text-white" to={`/`}>
                     Homepage
                   </Link>
                 </li>
-                <li>
-                  <i className="icon-arrRight" />
+                <li >
+                  <i className="icon-arrRight text-white" />
                 </li>
-                <li>{currentCollection.title}</li>
+                <li className="text-white">{currentCollection.title}</li>
               </ul>
             </div>
           </div>

@@ -1,37 +1,57 @@
 import Footer1 from "@/components/footers/Footer1";
-import Topbar from "@/components/headers/Topbar";
-import Hero from "@/components/homes/cosmetic/Hero";
+import Header1 from "@/components/headers/Header1";
+import HeroMain from "@/components/homes/cosmetic/Hero";
 import MetaComponent from "@/components/common/MetaComponent";
 import { lazy, Suspense, useState, useEffect } from "react";
-import Testimonials3 from "@/components/common/Testimonials3";
-import BannerTab from "@/components/common/BannerTab";
-import KoreanInspired from "@/components/common/KoreanInspired";
-import Hero2 from "@/components/homes/cosmetic/Hero2";
-import Header1 from "@/components/headers/Header1";
-import Products2 from "@/components/common/Products2";
-import Products1 from "@/components/products/Products1";
-import Products4 from "@/components/common/Products4";
-import Products5 from "@/components/common/Products5";
-import Categories from "@/components/common/Categories";
+import useProducts from "@/hooks/useProducts";
 
+// ✅ Common / Static Components
+import CategoriesSection from "@/components/common/Categories";
 
-const BannerCollection = lazy(() =>
+// ✅ Lazy Components
+const BannerCollectionMain = lazy(() =>
   import("@/components/homes/cosmetic/BannerCollection")
 );
-const BannerCountdown = lazy(() =>
-  import("@/components/homes/cosmetic/BannerCountdown")
+const OfferBannerSection = lazy(() =>
+  import("@/components/homes/cosmetic/OfferBannerCollection")
 );
-const Features = lazy(() => import("@/components/common/Features"));
-const ShopGram = lazy(() => import("@/components/common/ShopGram"));
-const Testimonials = lazy(() => import("@/components/common/Testimonials"));
-const MarqueeSection2 = lazy(() =>
+const BannerCollectionwatches = lazy(() =>
+  import("@/components/homes/cosmetic/BannerCollectionwatches")
+);
+const Video1 = lazy(() =>
+  import("@/components/homes/cosmetic/Video1")
+);
+const FeaturesSection = lazy(() => import("@/components/common/Features"));
+const ShopGramSection = lazy(() => import("@/components/common/ShopGram"));
+const TestimonialsJewelry = lazy(() =>
+  import("@/components/common/Testimonials3")
+);
+const MarqueeOffers = lazy(() =>
   import("@/components/common/MarqueeSection2")
 );
-const Products = lazy(() => import("@/components/common/Products5"));
-const Tiktok = lazy(() => import("@/components/common/Tiktok"));
-const Lookbook = lazy(() => import("@/components/homes/cosmetic/Lookbook"));
-const Collections = lazy(() => import("@/components/homes/cosmetic/Collections"));
-const Products3 = lazy(() => import("@/components/common/Products3"));
+const ProductsTrending = lazy(() =>
+  import("@/components/common/ProductsTrending")
+);
+const ProductsExclusiveEditon = lazy(() =>
+  import("@/components/common/ProductsExclusiveEditon")
+);
+const ProductsBestSelling = lazy(() =>
+  import("@/components/common/ProductsBestSeller")
+);
+const ProductsNewArrivals = lazy(() =>
+  import("@/components/common/ProductsNewArrivals")
+);
+
+const ProductsWatches = lazy(() =>
+  import("@/components/common/ProductsWatches")
+);
+const TiktokSection = lazy(() => import("@/components/common/Tiktok"));
+const LookbookSection = lazy(() =>
+  import("@/components/homes/cosmetic/Lookbook")
+);
+const CollectionsSection = lazy(() =>
+  import("@/components/homes/cosmetic/Collections")
+);
 
 const metadata = {
   title: "Shreeva Jewels | Timeless Lab-Grown Diamond Jewelry",
@@ -54,66 +74,102 @@ const Loader = () => <div className="loader-container">Loading...</div>;
 export default function HomePage() {
   const [isLoading, setIsLoading] = useState(true);
 
+  // ✅ Fetch products once
+  const { products, loading } = useProducts();
+
   useEffect(() => {
     setTimeout(() => {
       setIsLoading(false);
     }, 1000); // Show loader for at least 1 second
   }, []);
 
-  return isLoading ? (
+  return isLoading || loading ? (
     <FullPageLoader />
   ) : (
     <>
       <MetaComponent meta={metadata} />
-      <Topbar />
       <Header1 />
-      <Hero />
+      <HeroMain />
 
+      {/* ✅ Scrolling Offers */}
       <Suspense fallback={<Loader />}>
-        <MarqueeSection2 />
-      </Suspense>
-      <Suspense fallback={<Loader/>}>
-      <Categories/>
-        {/* <Collections /> */}
-      </Suspense>
-      
-      <Suspense fallback={<Loader />}>
-        <Products2 />
+        <MarqueeOffers />
       </Suspense>
 
+      {/* ✅ Categories */}
       <Suspense fallback={<Loader />}>
-      <Hero />
-        {/* <BannerCountdown /> */}
+        <CategoriesSection />
+      </Suspense>
+
+      {/* ✅ Offers + Featured Products */}
+      <Suspense fallback={<Loader />}>
+        <OfferBannerSection />
+        <ProductsExclusiveEditon products={products} />
+      </Suspense>
+
+      {/* ✅ Mid Banner */}
+      <Suspense fallback={<Loader />}>
+        <BannerCollectionMain />
+      </Suspense>
+
+      {/* ✅ Trending Products */}
+      <Suspense fallback={<Loader />}>
+        <ProductsTrending products={products} />
+      </Suspense>
+
+      {/* ✅ Optional Lookbook */}
+      <Suspense fallback={<Loader />}>
+        {/* <LookbookSection /> */}
+      </Suspense>
+
+      {/* ✅ Another Banner */}
+      <Suspense fallback={<Loader />}>
+        <BannerCollectionMain />
+      </Suspense>
+
+      {/* ✅ TikTok Section */}
+      <Suspense fallback={<Loader />}>
+        <TiktokSection />
+      </Suspense>
+
+   
+
+      {/* ✅ Features */}
+      <Suspense fallback={<Loader />}>
+        <FeaturesSection />
+      </Suspense>
+
+      {/* ✅ ShopGram (Instagram style feed) */}
+      <Suspense fallback={<Loader />}>
+        {/* <ShopGramSection /> */}
+      </Suspense>
+
+      {/* ✅ Best Selling Products */}
+      <Suspense fallback={<Loader />}>
+        <ProductsBestSelling products={products} />
       </Suspense>
 
       <Suspense fallback={<Loader />}>
-        <Products />
+        <Video1 />
+      </Suspense>
+
+
+      {/* ✅ New Arrivals */}
+      <Suspense fallback={<Loader />}>
+        <ProductsNewArrivals products={products} />
       </Suspense>
 
       <Suspense fallback={<Loader />}>
-        {/* <Lookbook /> */}
+        <BannerCollectionwatches />
       </Suspense>
 
       <Suspense fallback={<Loader />}>
-        <BannerCollection />
+        <ProductsWatches products={products} />
       </Suspense>
-
+   {/* ✅ Testimonials */}
       <Suspense fallback={<Loader />}>
-        <Tiktok />
+        <TestimonialsJewelry />
       </Suspense>
-      {/* <KoreanInspired/> */}
-      <Suspense fallback={<Loader />}>
-        <Testimonials3 />
-      </Suspense>
-
-      <Suspense fallback={<Loader />}>
-        <Features />
-      </Suspense>
-
-      <Suspense fallback={<Loader />}>
-        {/* <ShopGram /> */}
-      </Suspense> 
-
       <Footer1 />
     </>
   );

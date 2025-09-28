@@ -272,27 +272,52 @@ export const slides7Mobile = [
 
 export const slides0 = [
   {
-    imgSrc: "/images/banner/banner1.png",
+    imgSrc: "/images/banner/web-main-banner1.png",
     title: "",
     description:
       "",
   },  {
-    imgSrc: "/images/banner/banner1.png",
+    imgSrc: "/images/banner/web-main-banner2.png",
     title: "",
     description:
       "",
   },
+  {
+    imgSrc: "/images/banner/web-main-banner3.png",
+    title: "",
+    description:
+      "",
+  },
+  {
+    imgSrc: "/images/banner/web-main-banner5.png",
+    title: "",
+    description:
+      "",
+  },
+  
    
 ];
 export const slides0Mobile = [
   
    {
-    imgSrc: "/images/slider/Beaubless_Mobile2.png",
+    imgSrc: "/images/banner/mobile-banner1.png",
     title: "",
     description:
       "",
   }, {
-    imgSrc: "/images/slider/Beaubless_Mobile2.png",
+    imgSrc: "/images/banner/mobile-banner2.png",
+    title: "",
+    description:
+      "",
+  },
+  {
+    imgSrc: "/images/banner/mobile-banner3.png",
+    title: "",
+    description:
+      "",
+  },
+  {
+    imgSrc: "/images/banner/mobile-banner4.png",
     title: "",
     description:
       "",

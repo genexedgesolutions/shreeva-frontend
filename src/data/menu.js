@@ -21,8 +21,7 @@ export const ContactMenu = [
 ];
 
 export const shopMenu = [
-  { href: "/collections/hair-care", name: "Hair Care" },
-  { href: "/collections/skin-care", name: "Skin Care" },
+
  
 ];
 
@@ -57,10 +56,7 @@ export const shopByUse = [
 ];
 
 export const shopByMaterial = [
-  { href: "#", name: "Paraben-Free Formula" },
-  { href: "#", name: "Rice Water" },
-  { href: "#", name: "SPF 50 Protection" },
-  { href: "#", name: "Frizz Control" },
+  
 ];
 
 export const blogMenu = [

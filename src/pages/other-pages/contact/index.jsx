@@ -1,7 +1,7 @@
 import Footer1 from "@/components/footers/Footer1";
 import Header1 from "@/components/headers/Header1";
 import Topbar6 from "@/components/headers/Topbar6";
-import Contact3 from "@/components/otherPages/Contact2";
+import Contact from "@/components/otherPages/Contact2";
 import Faqs from "@/components/otherPages/Faqs";
 import StoreLocations3 from "@/components/otherPages/StoreLocations3";
 import React from "react";
@@ -10,7 +10,7 @@ import { Link } from "react-router-dom";
 import MetaComponent from "@/components/common/MetaComponent";
 import Topbar from "@/components/headers/Topbar";
 const metadata = {
-  title: "Contact Us || Beaubless",
+  title: "Contact Us || Shreeva Jewelery",
   description: "Beaubless - Hair Care and Skin Care Solution",
 };
 
@@ -51,7 +51,7 @@ export default function ContactPage() {
           </div>
         </div>
       </div>
-      <Contact3 />
+      <Contact />
       {/* <StoreLocations3 /> */}
       <Faqs />
       <Footer1 />

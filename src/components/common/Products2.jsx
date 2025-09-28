@@ -11,10 +11,10 @@ export default function Products2({
   const { products, loading } = useProducts();
   return (
     <section className={parentClass}>
-      <div className="container">
+      <div className="container mt-2 mb-5">
         <div className="heading-section text-center wow fadeInUp">
           <h3 className="heading">{title}</h3>
-          <p className="subheading text-secondary">
+          <p className="subheading text-dark">
             Browse our Top Trending: the hottest picks loved by all.
           </p>
         </div>

@@ -72,7 +72,7 @@ export default function Categories({ parentClass = "flat-spacing pt-0" }) {
 
   return (
     <section className={parentClass}>
-      <div className="container">
+      <div className="container mt-3">
         <div className="flat-collection-circle position-relative">
           <Swiper
             className="tf-sw-categories"
@@ -90,7 +90,7 @@ export default function Categories({ parentClass = "flat-spacing pt-0" }) {
               <SwiperSlide key={item.id}>
                 <div className="collection-card hover-img text-center">
                   <Link
-                    to={`/shop-collection/${item.slug ?? item.id}`}
+                    to={`/collections/${item.slug ?? item.id}`}
                     className="tile img-style"
                     aria-label={item.title}
                   >

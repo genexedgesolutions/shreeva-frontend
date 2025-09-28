@@ -1,91 +1,219 @@
+// src/components/Nav.jsx
+import React, { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
-import React from "react";
 
 export default function Nav() {
   const { pathname } = useLocation();
+  const path = pathname.toLowerCase();
+  const [openIdx, setOpenIdx] = useState(null); // mobile/touch toggle
+
+  const isActive = (to) => {
+    const t = to.toLowerCase();
+    if (t === "/") return path === "/";
+    return path === t || path.startsWith(t + "/");
+  };
+
+  const items = [
+    { label: "Home", to: "/" },
+    { label: "Collections", to: "/collections" },
+
+    {
+      label: "Rings",
+      to: "/collections/rings",
+      children: [
+        { label: "Solitaire Diamonds", to: "/collections/solitaire" },
+        { label: "Loose Diamonds", to: "/collections/loose" },
+        { label: "Engagement Rings", to: "/collections/engagement-rings" },
+      ],
+    },
+    {
+      label: "Jewellery",
+      to: "/collections/jewelry",
+      children: [
+        { label: "Rings", to: "/collections/rings" },
+        { label: "Necklaces", to: "/collections/necklaces" },
+        { label: "Earrings", to: "/collections/earrings" },
+        { label: "Braceletes", to: "/collections/braceletes" },
+        { label: "Bridal Sets", to: "/collections/bridal-sets" },
+        { label: "Pendent", to: "/collections/pendent" },
+      ],
+    },
+    {
+      label: "Diamonds",
+      to: "/collections/natural-diamond",
+      children: [
+        { label: "Natural Diamond", to: "/collections/natural-diamond" },
+        { label: "Lab Grown Diamond", to: "/collections/lab-grown-diamond" },
+        { label: "Certified Diamond", to: "/collections/certified-diamond" },
+        { label: "Non-certified Diamond", to: "/collections/non-certified-diamond" },
+      ],
+    },
+    {
+      label: "Materials",
+      to: "/collections/gold",
+      children: [
+        { label: "Gold", to: "/collections/gold" },
+        { label: "Platinum", to: "/collections/platinum" },
+        { label: "Sterling Silver 925", to: "/collections/sterling-silver-925" },
+      ],
+    },
+    {
+      label: "Karat",
+      to: "/collections/22-karat",
+      children: [
+        { label: "22 Karat", to: "/collections/22-karat" },
+        { label: "18 Karat", to: "/collections/18-karat" },
+        { label: "14 Karat", to: "/collections/14-karat" },
+        { label: "10 Karat", to: "/collections/10-karat" },
+        { label: "9 Karat", to: "/collections/9-karat" },
+      ],
+    },
+    {
+      label: "Styles",
+      to: "/collections/daily-wear",
+      children: [
+        { label: "Daily Wear", to: "/collections/daily-wear" },
+        { label: "Party Wear", to: "/collections/party-wear" },
+      ],
+    },
+
+    { label: "Watches", to: "/collections/watches" },
+    { label: "Custom Jewelery Enquiry", to: "/custom-jewelery-enquiry" },
+    { label: "Contact Us", to: "/contact-us" },
+  ];
 
   return (
     <>
-      {/* Home */}
-      <li className={`menu-item ${pathname === "/" ? "active" : ""}`}>
-        <Link to="/" className="item-link">Home</Link>
-      </li>
-      {/* Home */}
-      <li className={`menu-item ${pathname === "/collections" ? "active" : ""}`}>
-        <Link to="/Collections" className="item-link">Collections</Link>
-      </li>
+      {items.map((item, idx) => {
+        const hasDropdown = Array.isArray(item.children) && item.children.length > 0;
+        const open = openIdx === idx;
 
-      {/* Diamonds */}
-      <li className={`menu-item has-dropdown ${pathname === "/diamond" ? "active" : ""}`}>
-        <Link to="/diamond" className="item-link">Diamonds</Link>
-        <ul className="dropdown-menu">
-          <li><Link to="/diamond/solitaire">Solitaire Diamonds</Link></li>
-          <li><Link to="/diamond/loose">Loose Diamonds</Link></li>
-          <li><Link to="/diamond/engagement-rings">Engagement Rings</Link></li>
-        </ul>
-      </li>
+        return (
+          <li
+            key={idx}
+            className={`menu-item ${hasDropdown ? "has-dropdown" : ""} ${isActive(item.to) ? "active" : ""} ${open ? "open" : ""}`}
+            onMouseEnter={() => setOpenIdx(idx)}
+            onMouseLeave={() => setOpenIdx(null)}
+          >
+            {/* Label link (always navigates) */}
+            <Link to={item.to} className="item-link">
+              {item.label}
+            </Link>
 
-      {/* Fine Jewellery */}
-      <li className={`menu-item has-dropdown ${pathname === "/jewellery" ? "active" : ""}`}>
-        <Link to="/jewellery" className="item-link">Fine Jewellery</Link>
-        <ul className="dropdown-menu">
-          <li><Link to="/jewellery/rings">Rings</Link></li>
-          <li><Link to="/jewellery/necklaces">Necklaces</Link></li>
-          <li><Link to="/jewellery/earrings">Earrings</Link></li>
-        </ul>
-      </li>
+            {/* Caret button only when there is a dropdown (for touch devices) */}
+            {hasDropdown && (
+              <button
+                type="button"
+                className="caret-btn"
+                aria-label={open ? "Collapse menu" : "Expand menu"}
+                aria-haspopup="menu"
+                aria-expanded={open ? "true" : "false"}
+                onClick={(e) => {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  setOpenIdx((cur) => (cur === idx ? null : idx));
+                }}
+              >
+                ▼
+              </button>
+            )}
 
-      {/* Hip Hop Jewellery */}
-      <li className={`menu-item has-dropdown ${pathname === "/hip-hop-jewellery" ? "active" : ""}`}>
-        <Link to="/hip-hop-jewellery" className="item-link">Hip Hop Jewellery</Link>
-        <ul className="dropdown-menu">
-          <li><Link to="/hip-hop-jewellery/chains">Chains</Link></li>
-          <li><Link to="/hip-hop-jewellery/pendants">Pendants</Link></li>
-          <li><Link to="/hip-hop-jewellery/grillz">Grillz</Link></li>
-        </ul>
-      </li>
+            {hasDropdown && (
+              <ul className="dropdown-menu" role="menu">
+                {item.children.map((c, ci) => (
+                  <li key={ci} role="none">
+                    <Link to={c.to} role="menuitem">
+                      {c.label}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            )}
+          </li>
+        );
+      })}
 
-      {/* Parcel Goods */}
-      <li className={`menu-item has-dropdown ${pathname === "/parcel-goods" ? "active" : ""}`}>
-        <Link to="/parcel-goods" className="item-link">Parcel Goods</Link>
-        <ul className="dropdown-menu">
-          <li><Link to="/parcel-goods/bulk-diamonds">Bulk Diamonds</Link></li>
-          <li><Link to="/parcel-goods/wholesale-jewellery">Wholesale Jewellery</Link></li>
-        </ul>
-      </li>
+      <style jsx>{`
+        :global(nav ul), :global(.main-menu) {
+          overflow: visible !important;
+          position: relative !important;
+          z-index: 10 !important;
+        }
 
-      {/* Share Demand */}
-      <li className={`menu-item has-dropdown ${pathname === "/share-demand" ? "active" : ""}`}>
-        <Link to="/share-demand" className="item-link">Share Demand</Link>
-        <ul className="dropdown-menu">
-          <li><Link to="/share-demand/post">Post Demand</Link></li>
-          <li><Link to="/share-demand/browse">Browse Demand</Link></li>
-        </ul>
-      </li>
+        .menu-item {
+          position: relative !important;
+          list-style: none !important;
+          display: inline-flex !important;
+          align-items: center !important;
+          gap: 1px !important;
+          vertical-align: top !important;
+        }
 
-      {/* Events */}
-      <li className={`menu-item has-dropdown ${pathname === "/events" ? "active" : ""}`}>
-        <Link to="/events" className="item-link">Events</Link>
-        <ul className="dropdown-menu">
-          <li><Link to="/events/exhibitions">Exhibitions</Link></li>
-          <li><Link to="/events/trade-shows">Trade Shows</Link></li>
-        </ul>
-      </li>
+        .item-link {
+          display: block !important;
+          // padding: 10px 16px !important;
+          text-decoration: none !important;
+          color: #222 !important;
+          font-weight: 600 !important;
+          transition: color 0.2s ease !important;
+        }
 
-      {/* Education */}
-      <li className={`menu-item has-dropdown ${pathname === "/education" ? "active" : ""}`}>
-        <Link to="/education" className="item-link">Education</Link>
-        <ul className="dropdown-menu">
-          <li><Link to="/education/diamond-guide">Diamond Guide</Link></li>
-          <li><Link to="/education/jewellery-care">Jewellery Care</Link></li>
-          <li><Link to="/education/blogs">Blogs</Link></li>
-        </ul>
-      </li>
+        .menu-item.active > .item-link,
+        .item-link:hover {
+          color: #c29863 !important;
+        }
 
-      {/* Contact Us */}
-      <li className={`menu-item ${pathname === "/contact-us" ? "active" : ""}`}>
-        <Link to="/contact-us" className="item-link">Contact Us</Link>
-      </li>
+        .caret-btn {
+          background: transparent !important;
+          border: 0 !important;
+          cursor: pointer !important;
+          padding: 0 6px !important;
+          line-height: 1 !important;
+          color: inherit !important;
+          font-size: 12px !important;
+          user-select: none !important;
+        }
+
+        .menu-item.has-dropdown .dropdown-menu {
+          display: none !important;
+          position: absolute !important;
+          top: 100% !important;
+          left: 0 !important;
+          background: #fff !important;
+          border: 1px solid #ddd !important;
+          border-radius: 4px !important;
+          min-width: 200px !important;
+          z-index: 9999 !important;
+          padding: 8px 0 !important;
+          box-shadow: 0 10px 24px rgba(0,0,0,0.10) !important;
+        }
+
+        /* Desktop hover OR mobile/touch open state */
+        .menu-item.has-dropdown:hover > .dropdown-menu,
+        .menu-item.open > .dropdown-menu {
+          display: block !important;
+        }
+
+        .dropdown-menu li { margin: 0 !important; padding: 0 !important; }
+        .dropdown-menu li a {
+          display: block !important;
+          padding: 8px 14px !important;
+          text-decoration: none !important;
+          color: #333 !important;
+          font-size: 14px !important;
+          transition: background 0.2s ease, color 0.2s ease !important;
+          white-space: nowrap !important;
+        }
+        .dropdown-menu li a:hover {
+          background: #f5f5f5 !important;
+          color: #c29863 !important;
+        }
+
+        :global(header), :global(.header), :global(.site-header) {
+          overflow: visible !important;
+          z-index: 20 !important;
+        }
+      `}</style>
     </>
   );
 }

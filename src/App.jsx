@@ -48,6 +48,7 @@ import MyAccountAddressPage from "./pages/my-account/my-account-address";
 import MyAccountOrdersDetailsPage from "./pages/my-account/my-account-orders-details";
 import ShippingPage from "./pages/other-pages/shipping";
 import ContactPage from "./pages/other-pages/contact";
+import Customjeweleryenquiry from "./pages/other-pages/custom-jewelery-enquiry";
 import CheckoutPage from "./pages/products/checkout";
 import OrderSuccessPage from "./pages/other-pages/order-success";
 import GiftingPage from "./pages/gifting/Gifting";
@@ -211,6 +212,7 @@ function App({ setIsLoading }) {
               <Route path="blogs/:slug" element={<BlogDetailsPage2 />} />
               <Route path="about-us" element={<AboutUsPage />} />
               <Route path="contact-us" element={<ContactPage />} />
+              <Route path="custom-jewelery-enquiry" element={<Customjeweleryenquiry />} />
               <Route path="term-of-use" element={<TermsOfUsePage />} />
               <Route path="privacy-policy" element={<PrivacyPage />} />
               <Route path="refund-return" element={<ReturnPage />} />

@@ -20,6 +20,8 @@ export default function ProductCard1({ product, gridClass = "" }) {
 
   useEffect(() => {
     setCurrentImage(product.imgSrc);
+    console.log(product);
+    
   }, [product]);
   return (
     <div
@@ -31,15 +33,15 @@ export default function ProductCard1({ product, gridClass = "" }) {
         <Link to={`/products/${product.slug}`} className="product-img">
           <img
             className="lazyload img-product"
-            src={currentImage}
-            alt={product.name}
+            src={product.images[0]}
+            alt={product.title}
             width={600}
             height={800}
           />
 
           <img
             className="lazyload img-hover"
-            src={product.imgHover}
+            src={product.images[0]}
             alt={product.title}
             width={600}
             height={800}
@@ -239,9 +241,9 @@ export default function ProductCard1({ product, gridClass = "" }) {
         {/* Product Price */}
         <span className="price">
           {product.finalPrice && (
-            <span className="old-price">₹{product.finalPrice.toFixed(2)}</span>
+            <span className="old-price">₹{product.price.toFixed(2)}</span>
           )}{" "}
-          ₹{product.offerPrice?.toFixed(2)}
+          ₹{product.price?.toFixed(2)}
         </span>
         {/* Product Ratings */}
         {/* <div className="sub d-md-flex">
