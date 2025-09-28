@@ -19,7 +19,7 @@ const BannerCollectionwatches = lazy(() =>
   import("@/components/homes/cosmetic/BannerCollectionwatches")
 );
 const Video1 = lazy(() =>
-  import("@/components/homes/cosmetic/Video1")
+  import("@/components/homes/cosmetic/video1.jsx")
 );
 const FeaturesSection = lazy(() => import("@/components/common/Features"));
 const ShopGramSection = lazy(() => import("@/components/common/ShopGram"));
